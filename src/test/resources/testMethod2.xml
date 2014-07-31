@@ -1,0 +1,10 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Header/>
+    <soap:Body>
+        <ns2:method2 xmlns:ns2="http://sample.ws/">
+            <arg0>aaa</arg0>
+            <arg0>bbb</arg0>
+            <arg0>ccc</arg0>
+        </ns2:method2>
+    </soap:Body>
+</soap:Envelope>

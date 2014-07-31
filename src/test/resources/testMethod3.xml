@@ -1,0 +1,21 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Header />
+	<soap:Body>
+		<ns2:method3 xmlns:ns2="http://sample.ws/">
+			<arg0>
+				<entry>
+					<key>key1</key>
+					<value>123</value>
+				</entry>
+				<entry>
+					<key>key2</key>
+					<value>456</value>
+				</entry>
+				<entry>
+					<key>key3</key>
+					<value>789</value>
+				</entry>
+			</arg0>
+		</ns2:method3>
+	</soap:Body>
+</soap:Envelope>
