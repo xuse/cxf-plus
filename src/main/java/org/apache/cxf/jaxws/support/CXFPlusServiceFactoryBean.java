@@ -49,6 +49,7 @@ import org.apache.cxf.common.injection.NoJSR250Annotations;
 import org.apache.cxf.common.logging.LogUtils;
 import org.apache.cxf.databinding.DataBinding;
 import org.apache.cxf.jaxbplus.JAXBDataBinding;
+import org.apache.cxf.jaxws.ef.PlusWrapperClassGenerator;
 import org.apache.cxf.message.Exchange;
 import org.apache.cxf.resource.ResourceManager;
 import org.apache.cxf.service.factory.AbstractServiceConfiguration;

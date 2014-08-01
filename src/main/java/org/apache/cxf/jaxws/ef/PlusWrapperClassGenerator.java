@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.cxf.jaxws.support;
+package org.apache.cxf.jaxws.ef;
 
 
 import java.lang.annotation.Annotation;
@@ -42,8 +42,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Holder;
 
-import jef.accelerator.asm.Opcodes;
-
 import org.apache.cxf.common.logging.LogUtils;
 import org.apache.cxf.common.util.ASMHelper;
 import org.apache.cxf.common.util.PackageUtils;
@@ -51,6 +49,7 @@ import org.apache.cxf.common.util.StringUtils;
 import org.apache.cxf.helpers.JavaUtils;
 import org.apache.cxf.jaxbplus.JAXBUtils;
 import org.apache.cxf.jaxws.WrapperClassGenerator;
+import org.apache.cxf.jaxws.support.CXFPlusServiceFactoryBean;
 import org.apache.cxf.service.factory.ReflectionServiceFactoryBean;
 import org.apache.cxf.service.model.InterfaceInfo;
 import org.apache.cxf.service.model.MessageInfo;
@@ -196,7 +195,7 @@ public final class PlusWrapperClassGenerator extends ASMHelper {
             }
         }
         String classFileName = periodToSlashes(className);
-        cw.visit(Opcodes.V1_5, Opcodes.ACC_PUBLIC + Opcodes.ACC_SUPER, classFileName, null,
+        cw.visit(jef.accelerator.asm.Opcodes.V1_5, jef.accelerator.asm.Opcodes.ACC_PUBLIC + jef.accelerator.asm.Opcodes.ACC_SUPER, classFileName, null,
                  "java/lang/Object", null);
 
         jef.accelerator.asm.AnnotationVisitor av0 = cw.visitAnnotation("Ljavax/xml/bind/annotation/XmlRootElement;", true);
@@ -218,13 +217,13 @@ public final class PlusWrapperClassGenerator extends ASMHelper {
         av0.visitEnd();
 
         // add constructor
-        jef.accelerator.asm.MethodVisitor mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null);
+        jef.accelerator.asm.MethodVisitor mv = cw.visitMethod(jef.accelerator.asm.Opcodes.ACC_PUBLIC, "<init>", "()V", null, null);
         mv.visitCode();
         jef.accelerator.asm.Label lbegin = createLabel1();
         mv.visitLabel(lbegin);
-        mv.visitVarInsn(Opcodes.ALOAD, 0);
-        mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V");
-        mv.visitInsn(Opcodes.RETURN);
+        mv.visitVarInsn(jef.accelerator.asm.Opcodes.ALOAD, 0);
+        mv.visitMethodInsn(jef.accelerator.asm.Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V");
+        mv.visitInsn(jef.accelerator.asm.Opcodes.RETURN);
         jef.accelerator.asm.Label lend =createLabel1();
         mv.visitLabel(lend);
         mv.visitLocalVariable("this", "L" + classFileName + ";", null, lbegin, lend, 0);
@@ -253,7 +252,7 @@ public final class PlusWrapperClassGenerator extends ASMHelper {
 	private void generatePackageInfo(String className, String ns, Class clz) {
 		jef.accelerator.asm.ClassWriter cw = createClassWriter1();
         String classFileName = periodToSlashes(className);
-        cw.visit(Opcodes.V1_5, Opcodes.ACC_ABSTRACT + Opcodes.ACC_INTERFACE, classFileName, null,
+        cw.visit(jef.accelerator.asm.Opcodes.V1_5, jef.accelerator.asm.Opcodes.ACC_ABSTRACT + jef.accelerator.asm.Opcodes.ACC_INTERFACE, classFileName, null,
                  "java/lang/Object", null);
         
         boolean q = qualified;
@@ -355,7 +354,7 @@ public final class PlusWrapperClassGenerator extends ASMHelper {
         }
         String fieldName = JavaUtils.isJavaKeyword(name) ? JavaUtils.makeNonJavaKeyword(name) : name;
         
-        jef.accelerator.asm.FieldVisitor fv = cw.visitField(Opcodes.ACC_PRIVATE,
+        jef.accelerator.asm.FieldVisitor fv = cw.visitField(jef.accelerator.asm.Opcodes.ACC_PRIVATE,
                                         fieldName, 
                                         classCode,
                                         fieldDescriptor,
@@ -381,26 +380,26 @@ public final class PlusWrapperClassGenerator extends ASMHelper {
         fv.visitEnd();
 
         String methodName = JAXBUtils.nameToIdentifier(name, JAXBUtils.IdentifierType.GETTER);
-        jef.accelerator.asm.MethodVisitor mv = cw.visitMethod(Opcodes.ACC_PUBLIC, methodName, "()" + classCode, 
+        jef.accelerator.asm.MethodVisitor mv = cw.visitMethod(jef.accelerator.asm.Opcodes.ACC_PUBLIC, methodName, "()" + classCode, 
                                           fieldDescriptor == null ? null : "()" + fieldDescriptor,
                                           null);
         mv.visitCode();
 
-        mv.visitVarInsn(Opcodes.ALOAD, 0);
-        mv.visitFieldInsn(Opcodes.GETFIELD, classFileName, fieldName, classCode);
-        mv.visitInsn(jef.accelerator.asm.Type.getType(classCode).getOpcode(Opcodes.IRETURN));
+        mv.visitVarInsn(jef.accelerator.asm.Opcodes.ALOAD, 0);
+        mv.visitFieldInsn(jef.accelerator.asm.Opcodes.GETFIELD, classFileName, fieldName, classCode);
+        mv.visitInsn(jef.accelerator.asm.Type.getType(classCode).getOpcode(jef.accelerator.asm.Opcodes.IRETURN));
         mv.visitMaxs(0, 0);
         mv.visitEnd();
         
         methodName = JAXBUtils.nameToIdentifier(name, JAXBUtils.IdentifierType.SETTER);
-        mv = cw.visitMethod(Opcodes.ACC_PUBLIC, methodName, "(" + classCode + ")V",
+        mv = cw.visitMethod(jef.accelerator.asm.Opcodes.ACC_PUBLIC, methodName, "(" + classCode + ")V",
                             fieldDescriptor == null ? null : "(" + fieldDescriptor + ")V", null);
         mv.visitCode();
-        mv.visitVarInsn(Opcodes.ALOAD, 0);
+        mv.visitVarInsn(jef.accelerator.asm.Opcodes.ALOAD, 0);
         jef.accelerator.asm.Type setType = jef.accelerator.asm.Type.getType(classCode);
-        mv.visitVarInsn(setType.getOpcode(Opcodes.ILOAD), 1);
-        mv.visitFieldInsn(Opcodes.PUTFIELD, className, fieldName, classCode);       
-        mv.visitInsn(Opcodes.RETURN);
+        mv.visitVarInsn(setType.getOpcode(jef.accelerator.asm.Opcodes.ILOAD), 1);
+        mv.visitFieldInsn(jef.accelerator.asm.Opcodes.PUTFIELD, className, fieldName, classCode);       
+        mv.visitInsn(jef.accelerator.asm.Opcodes.RETURN);
         mv.visitMaxs(0, 0);
         mv.visitEnd();
 
