@@ -11,6 +11,7 @@ import javax.xml.namespace.QName;
 import jef.common.log.LogUtil;
 import jef.tools.ArrayUtils;
 import jef.tools.StringUtils;
+import jef.tools.reflect.BeanUtils;
 
 import org.apache.cxf.BusFactory;
 import org.apache.cxf.endpoint.Server;
@@ -24,10 +25,10 @@ import org.apache.cxf.jaxws.JaxWsServerFactoryBean;
 import org.apache.cxf.jaxws.support.CXFPlusServiceFactoryBean;
 import org.apache.cxf.service.factory.CXFPlusServiceBean;
 import org.apache.cxf.transport.servlet.CXFNonSpringServlet;
-import org.easyframe.cxfplus.support.DefaultWsFactory;
+import org.easyframe.cxfplus.support.DefaultImpl;
 import org.easyframe.cxfplus.support.IWebService;
-import org.easyframe.cxfplus.support.ServcieLookup;
 import org.easyframe.cxfplus.support.ServiceDefinition;
+import org.easyframe.cxfplus.support.ServiceLookup;
 import org.easyframe.cxfplus.support.ServiceProcessor;
 import org.easyframe.cxfplus.support.SpringServletServcieLookup;
 import org.easyframe.jaxrs.FastJSONProvider;
@@ -46,9 +47,10 @@ public class CXFPlusServlet extends CXFNonSpringServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private Logger log = LoggerFactory.getLogger(getClass());
-	private ServcieLookup WSlookup;
-	private ServcieLookup RSlookup;
+	private ServiceLookup WSlookup;
+	private ServiceLookup RSlookup;
 	private ServiceProcessor serviceUtill;
+	private String httpPrefix="";
 	private boolean trace;
 	
 	/**
@@ -58,11 +60,20 @@ public class CXFPlusServlet extends CXFNonSpringServlet {
 	private String[] wsNamePattern;
 	
 	
-	private String restBasepath="/rest";
 	private int restUseFastJson=1; //0 不使用 1 使用写 2 使用读写
 	private boolean restJsonWithClassname;
-	private String restBasePath;
+	private String restBasePath="/rest";
 	private String[] restNamePattern;
+
+	
+	
+	public String getHttpPrefix() {
+		return httpPrefix;
+	}
+
+	public void setHttpPrefix(String httpPrefix) {
+		this.httpPrefix = httpPrefix;
+	}
 
 	public void init() throws ServletException {
 		super.init();
@@ -70,17 +81,43 @@ public class CXFPlusServlet extends CXFNonSpringServlet {
 
 	protected void loadBus(ServletConfig sc) {
 		super.loadBus(sc);
-		initLookup();
+		initLookup(sc);
 		if (isRemoteMode()) {
 			this.log.info("Current mode is remote work, no Jax-rs need to publish....");
 			return;
 		}
 		initParam(sc);
-		processWebservice(sc);
-		processJaxRs(sc);
+		processWebservice();
+		processJaxRs();
 	}
 	
-	private void initLookup() {
+	public ServiceLookup getWSlookup() {
+		return WSlookup;
+	}
+
+	public void setWSlookup(ServiceLookup wSlookup) {
+		WSlookup = wSlookup;
+	}
+
+	public ServiceLookup getRSlookup() {
+		return RSlookup;
+	}
+
+	public void setRSlookup(ServiceLookup rSlookup) {
+		RSlookup = rSlookup;
+	}
+
+	private void initLookup(ServletConfig sc) {
+		String clz=sc.getInitParameter("init-class");
+		if(StringUtils.isNotEmpty(clz)){
+			try {
+				this.getClass().getClassLoader().loadClass(clz);
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			BeanUtils.newInstance(clz, this);
+		}
 		if (WSlookup == null) {
 			WSlookup = new SpringServletServcieLookup(this.getServletContext(),IWebService.class);
 		}
@@ -89,7 +126,7 @@ public class CXFPlusServlet extends CXFNonSpringServlet {
 		}
 	}
 
-	private void processJaxRs(ServletConfig sc) {
+	public void processJaxRs() {
 		log.debug("Start procesing the Restful-Services.");
 		Map<Class<?>, ResourceProvider> resProviders = new HashMap<Class<?>, ResourceProvider>();
 		for (ServiceDefinition def : RSlookup.getServices()) {
@@ -109,7 +146,7 @@ public class CXFPlusServlet extends CXFNonSpringServlet {
 		}
 	}
 
-	public void processWebservice(ServletConfig sc) {
+	public void processWebservice() {
 		/*
 		 * Force use JEF's JAXB+ engine. 让JDK内置的JAXB实现查找器固定JEF实现上。目前暂不需用
 		 * System.setProperty("javax.xml.bind.JAXBContext",
@@ -129,6 +166,10 @@ public class CXFPlusServlet extends CXFNonSpringServlet {
 		}
 	}
 
+	public void initParam() {
+		initParam(null);
+		this.setBus(BusFactory.getDefaultBus());
+	}
 	private void initParam(ServletConfig sc) {
 		if(sc==null){
 			this.trace=true;
@@ -140,7 +181,7 @@ public class CXFPlusServlet extends CXFNonSpringServlet {
 			
 			String restBasepath=sc.getInitParameter("rest-basepath");
 			if(StringUtils.isNotEmpty(restBasepath)){
-				this.restBasepath=restBasepath;
+				this.restBasePath=restBasepath;
 			}
 			this.restUseFastJson=StringUtils.toInt(sc.getInitParameter("rest-use-fastjson"), 2);
 			this.restJsonWithClassname=StringUtils.toBoolean(sc.getInitParameter("rest-json-withclassname"), false);
@@ -150,7 +191,7 @@ public class CXFPlusServlet extends CXFNonSpringServlet {
 			this.serviceUtill = ((SpringServletServcieLookup) WSlookup).getWebServiceProcessor();
 		}
 		if (serviceUtill == null) {
-			this.serviceUtill = DefaultWsFactory.getInstance();
+			this.serviceUtill = DefaultImpl.getInstance();
 		}
 	}
 
@@ -193,7 +234,7 @@ public class CXFPlusServlet extends CXFNonSpringServlet {
 			bean.setServiceClass(serviceClass);
 			bean.setServiceBean(serviceBean);
 			bean.setServiceName(new QName("http://" + StringUtils.join(packageName, ".") + "/", servName));
-			bean.setAddress(service.getPath());
+			bean.setAddress(httpPrefix+service.getPath());
 			if (this.trace) {
 				bean.getInInterceptors().add(new LoggingInInterceptor());
 				bean.getOutInterceptors().add(new LoggingOutInterceptor());
@@ -204,10 +245,8 @@ public class CXFPlusServlet extends CXFNonSpringServlet {
 			// epimpl.publish();
 		} else {
 			CXFPlusServiceFactoryBean myFac = new CXFPlusServiceFactoryBean();
-
-			org.apache.cxf.jaxws.EndpointImpl epimpl = new org.apache.cxf.jaxws22.EndpointImpl(BusFactory.getThreadDefaultBus(), serviceBean, new JaxWsServerFactoryBean(myFac));
+			org.apache.cxf.jaxws.EndpointImpl epimpl = new org.apache.cxf.jaxws22.EndpointImpl(getBus(), serviceBean, new JaxWsServerFactoryBean(myFac));
 			epimpl.setServiceName(new QName("http://" + StringUtils.join(packageName, ".") + "/", servName));
-
 			if (this.trace) {
 				epimpl.getHandlers().add(new TraceHandler());
 			}
@@ -218,12 +257,13 @@ public class CXFPlusServlet extends CXFNonSpringServlet {
 	
 	private void doPublishRestful(Map<Class<?>, ResourceProvider> springResources) {
 		JAXRSServerFactoryBean sf = new JAXRSServerFactoryBean();
+		sf.setBus(getBus());
 		for (Entry<Class<?>, ResourceProvider> e : springResources.entrySet()) {
 			sf.setResourceClasses(e.getKey());
 			sf.setResourceProvider(e.getKey(), e.getValue());
-			log.info("Publishing JAX-RS Service [{}], url=", e, restBasePath);
+			LogUtil.show("Publishing JAX-RS Service "+ e+" at "+ restBasePath);
 		}
-		sf.setAddress(restBasepath);
+		sf.setAddress(httpPrefix+restBasePath);
 		if(restUseFastJson==1){
 			sf.setProvider(new FastJSONProvider(false,restJsonWithClassname));
 		}else{

@@ -38,7 +38,7 @@ public class WsUnitTest extends CXFTestBase{
 	@Test
 	public void testMyServiceClientProxy() throws Exception{
 		Map<String,Long> ppp=ImmutableMap.of("key1", 123L, "key2", 456L, "key3", 789L);
-		Map map=(Map)super.invokeJaxWsMethod(serviceBean, MyWsTest.class, "method3",ppp);
+		Map map=(Map)super.invokeJaxWsMethod(serviceBean, MyWsTest.class, "method3",ppp,"aaa");
 		assertTrue(map.size()>0);
 		System.out.println("result:"+map);
 	}

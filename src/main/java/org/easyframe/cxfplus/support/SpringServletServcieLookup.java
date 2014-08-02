@@ -12,7 +12,7 @@ import jef.tools.reflect.ClassWrapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-public class SpringServletServcieLookup implements ServcieLookup {
+public class SpringServletServcieLookup implements ServiceLookup {
 	private ServletContext sc;
 	private ApplicationContext applicationContext;
 	private Class<?> lookupInterface;

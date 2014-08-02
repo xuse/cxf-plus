@@ -7,6 +7,11 @@ import java.util.List;
  * @author jiyi
  *
  */
-public interface ServcieLookup{
+public interface ServiceLookup{
+	
+	/**
+	 * 提供各种服务
+	 * @return
+	 */
 	List<ServiceDefinition> getServices();
 }

@@ -23,7 +23,9 @@ import org.apache.cxf.jaxws.JaxWsServerFactoryBean;
 import org.apache.cxf.jaxws.support.CXFPlusServiceFactoryBean;
 import org.apache.cxf.service.factory.CXFPlusServiceBean;
 import org.apache.cxf.test.AbstractCXFTest;
-import org.easyframe.cxfplus.support.DefaultWsFactory;
+import org.easyframe.cxfplus.client.ClientFactory;
+import org.easyframe.cxfplus.client.WsClientFactoryImpl;
+import org.easyframe.cxfplus.support.DefaultImpl;
 import org.easyframe.cxfplus.support.IWebService;
 import org.easyframe.cxfplus.support.ServiceDefinition;
 import org.easyframe.cxfplus.support.ServiceProcessor;
@@ -42,7 +44,9 @@ import org.w3c.dom.Node;
 public abstract class CXFTestBase extends AbstractCXFTest {
 	//Spring的context
 	protected static ApplicationContext context;
-
+	private ClientFactory jaxwsPlus=new WsClientFactoryImpl();
+	private ClientFactory rpcPlus=new WsClientFactoryImpl(false,true);
+	
 	/**
 	 * 可被子类覆盖，表示是否需要打印出soap报文
 	 * @return
@@ -59,7 +63,7 @@ public abstract class CXFTestBase extends AbstractCXFTest {
 	 *  
 	 */
 	protected ServiceProcessor getFactory(){
-		return new DefaultWsFactory();
+		return new DefaultImpl();
 	}
 
 	/**
@@ -217,7 +221,7 @@ public abstract class CXFTestBase extends AbstractCXFTest {
 		//创建客户端并运行
 		try{
 			String url = "local://" + intf.getName();
-			Object client=getFactory().createClientProxy(url, intf);
+			Object client=jaxwsPlus.createProxy(url, intf);
 			Object result=me.invoke(client, params);
 			return result;
 		}finally{
@@ -245,7 +249,7 @@ public abstract class CXFTestBase extends AbstractCXFTest {
 		//创建客户端并运行
 		try{
 			String url = "local://" + intf.getName();
-			Client client=getFactory().createNoneJaxwsClient(url, intf);
+			Client client=rpcPlus.createClient(url, intf);
 			 Object[]  result=client.invoke(method, params);
 			return result;
 		}finally{

@@ -3,8 +3,8 @@ package org.easyframe.cxfplus.spring;
 import jef.tools.Assert;
 import jef.tools.StringUtils;
 
-import org.easyframe.cxfplus.support.DefaultWsFactory;
-import org.easyframe.cxfplus.support.ServiceProcessor;
+import org.easyframe.cxfplus.client.ClientFactory;
+import org.easyframe.cxfplus.client.WsClientFactoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.FactoryBean;
@@ -24,10 +24,10 @@ public class JaxWsProxyBeanFactory implements FactoryBean<Object>,InitializingBe
 	
 	private Class<?> clz;
 	private Object service;
-	private ServiceProcessor factory;
+	private ClientFactory factory;
 	
 	@Autowired(required=false)
-	public void setFactory(ServiceProcessor factory) {
+	public void setFactory(ClientFactory factory) {
 		this.factory = factory;
 	}
 
@@ -41,9 +41,9 @@ public class JaxWsProxyBeanFactory implements FactoryBean<Object>,InitializingBe
 	
 	public Object getObject() throws Exception {
 		if(service==null){
-			ServiceProcessor factory=this.factory;
+			ClientFactory factory=this.factory;
 			if(factory==null){
-				factory=DefaultWsFactory.getInstance(false);
+				factory=new WsClientFactoryImpl();
 			}
 			log.info("Initializing remote bean: {}",url);
 			if(!url.startsWith("http://")){
@@ -63,7 +63,7 @@ public class JaxWsProxyBeanFactory implements FactoryBean<Object>,InitializingBe
 				loader = JaxWsProxyBeanFactory.class.getClassLoader();
 			}
 			this.clz=loader.loadClass(serviceInterface);
-			this.service=factory.createClientProxy(url, clz);
+			this.service=factory.createProxy(url, clz);
 		}
 		log.debug("Return remote service bean {}" , service);
 		return service;
