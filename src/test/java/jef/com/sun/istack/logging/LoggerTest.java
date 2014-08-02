@@ -71,7 +71,7 @@ public class LoggerTest extends TestCase {
      */
     public void testGetSubsystemName() {
         String result = Logger.getSystemLoggerName(LoggerTest.class);
-        assertEquals("com.sun.istack.logging", result);
+        assertEquals("jef.com.sun.istack.logging", result);
     }
 
 }

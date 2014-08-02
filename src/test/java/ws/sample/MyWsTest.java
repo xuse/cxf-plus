@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import jef.common.SimpleMapAdapter;
 
-import com.googlecode.jef.ws.IWebService;
+import org.easyframe.cxfplus.support.IWebService;
 
 @WebService
 public abstract interface MyWsTest extends IWebService {

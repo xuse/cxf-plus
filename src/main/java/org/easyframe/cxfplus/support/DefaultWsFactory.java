@@ -1,4 +1,4 @@
-package com.googlecode.jef.ws;
+package org.easyframe.cxfplus.support;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,17 +12,16 @@ import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxws.CXFPlusClientFactoryBean;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.service.factory.CXFPlusServiceBean;
-
-import com.googlecode.jef.ws.interceptors.TraceHandler;
+import org.easyframe.jaxws.interceptors.TraceHandler;
 
 /**
  * 简单的WsFactory实现。
  * @author jiyi
  *
  */
-public class DefaultWsFactory implements WebServiceFactory {
+public class DefaultWsFactory implements ServiceProcessor {
 	private static DefaultWsFactory instance = new DefaultWsFactory();
-	private final Map<String, WsContext> data = new HashMap<String, WsContext>();
+	private final Map<String, ServiceDefinition> data = new HashMap<String, ServiceDefinition>();
 	private boolean trace;
 
 	public static DefaultWsFactory getInstance() {
@@ -34,19 +33,17 @@ public class DefaultWsFactory implements WebServiceFactory {
 		return instance;
 	}
 
-	public WsContext createServerBean(Object service, Class<?> interfaceClz) {
-		return new WsContext(service, interfaceClz);
+	public ServiceDefinition processServiceDef(ServiceDefinition def) {
+		return def;
 	}
+	
 
-	public Map<String, WsContext> getRegistedService() {
+	public Map<String, ServiceDefinition> getRegistedService() {
 		return Collections.unmodifiableMap(this.data);
 	}
-	public void register(String name, IWebService service, Class<?> interfaceClz) {
-		this.data.put(name, new WsContext(service, interfaceClz));
-	}
-	@Deprecated
-	public void regist(String name, IWebService service, Class<?> interfaceClz) {
-		register(name,service,interfaceClz);
+	
+	public void register(String name, IWebService service, Class<?> serviceClass) {
+		this.data.put(name, new ServiceDefinition(name,serviceClass,service));
 	}
 
 	public void init() {

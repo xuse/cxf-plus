@@ -3,12 +3,12 @@ import java.io.File;
 import java.util.Map;
 
 import org.apache.cxf.helpers.XMLUtils;
+import org.easyframe.cxfplus.test.CXFTestBase;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import com.google.common.collect.ImmutableMap;
-import com.googlecode.jef.ws.CXFTestBase;
 
 
 public class WsUnitTest extends CXFTestBase{

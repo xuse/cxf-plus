@@ -1,4 +1,4 @@
-package com.googlecode.jef.ws.support;
+package org.easyframe.jaxws.jaxb.adapters;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

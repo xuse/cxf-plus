@@ -1,4 +1,4 @@
-package com.googlecode.jef.ws.interceptors;
+package org.easyframe.jaxws.interceptors;
 
 import java.io.InputStream;
 import java.io.PrintWriter;

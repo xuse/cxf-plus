@@ -6,22 +6,21 @@ import org.apache.cxf.frontend.ClientProxyFactoryBean;
 import org.apache.cxf.jaxws.CXFPlusClientFactoryBean;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.service.factory.CXFPlusServiceBean;
+import org.easyframe.cxfplus.support.ServiceDefinition;
+import org.easyframe.cxfplus.support.ServiceProcessor;
 
-import com.googlecode.jef.ws.WebServiceFactory;
-import com.googlecode.jef.ws.WsContext;
-
-public class MyWebServiceFactory implements WebServiceFactory{
+public class MyWebServiceFactory implements ServiceProcessor{
 	
 	/**
 	 * 实现这个方法后，可以体检要发布的WebService对象和接口
 	 * @param serviceBean  服务的实例对象  
 	 * @param sei          服务的接口类
-	 * @return  实际将要发布的Web服务接口类和对象实例。这两个值包装在一个{@link WsContext} 对象中。
+	 * @return  实际将要发布的Web服务接口类和对象实例。这两个值包装在一个{@link ServiceDefinition} 对象中。
 	 */
-	public WsContext createServerBean(Object service, Class<?> interfaceClz) {
+	public ServiceDefinition processServiceDef(ServiceDefinition def) {
 		try {
-			Class intf = Class.forName("WS_"+interfaceClz.getName());  //将WebService服务的发布接口换成另一个类
-			return new WsContext(service, intf);
+			Class<?> intf = Class.forName("WS_"+def.getServiceClass().getName());  //将WebService服务的发布接口换成另一个类
+			return new ServiceDefinition(def.getName(),intf,def.getServiceBean());
 		} catch (ClassNotFoundException e) {
 			return null;
 		}

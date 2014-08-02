@@ -1,6 +1,7 @@
-package com.googlecode.jef.ws;
+package org.easyframe.cxfplus.support;
 
 import org.apache.cxf.endpoint.Client;
+import org.easyframe.cxfplus.support.ServiceDefinition;
 
 /**
  * 这个接口可以定制WebService类的发布行为。
@@ -9,15 +10,14 @@ import org.apache.cxf.endpoint.Client;
  * @author jiyi
  *
  */
-public interface WebServiceFactory {
+public interface ServiceProcessor {
 	
 	/**
 	 * 实现这个方法后，可以体检要发布的WebService对象和接口
-	 * @param serviceBean  服务的实例对象  
-	 * @param sei          服务的接口类
-	 * @return  实际将要发布的Web服务接口类和对象实例。这两个值包装在一个{@link WsContext} 对象中。
+	 * @param def  服务定义
+	 * @return  实际将要发布的Web服务接口类和对象实例。这两个值包装在一个{@link ServiceDefinition} 对象中。
 	 */
-	WsContext createServerBean(Object serviceBean, Class<?> sei);
+	ServiceDefinition processServiceDef(ServiceDefinition def);
 	
 	/**
 	 * 如果你将服务端的接口类替换为其他类型了，那么也要负责生成一个客户端的代理对象。(使用JAX-WS)

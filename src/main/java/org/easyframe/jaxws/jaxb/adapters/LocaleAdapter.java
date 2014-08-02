@@ -1,4 +1,4 @@
-package com.googlecode.jef.ws.support;
+package org.easyframe.jaxws.jaxb.adapters;
 
 import java.util.Locale;
 

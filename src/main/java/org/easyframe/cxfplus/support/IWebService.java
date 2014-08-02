@@ -1,4 +1,4 @@
-package com.googlecode.jef.ws;
+package org.easyframe.cxfplus.support;
 
 
 /**

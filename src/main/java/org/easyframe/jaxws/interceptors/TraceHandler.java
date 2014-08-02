@@ -1,4 +1,4 @@
-package com.googlecode.jef.ws.interceptors;
+package org.easyframe.jaxws.interceptors;
 
 import java.util.Set;
 
@@ -19,8 +19,6 @@ public class TraceHandler implements SOAPHandler<SOAPMessageContext> {
 	public TraceHandler(){}
 	
 	/**
-	 * 带参数构�?
-	 * @param format true输出的xml格式�?
 	 */
 	public TraceHandler(boolean format){
 		this.format=format;

@@ -1,4 +1,4 @@
-package com.googlecode.jef.ws;
+package org.easyframe.cxfplus.test;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -23,12 +23,15 @@ import org.apache.cxf.jaxws.JaxWsServerFactoryBean;
 import org.apache.cxf.jaxws.support.CXFPlusServiceFactoryBean;
 import org.apache.cxf.service.factory.CXFPlusServiceBean;
 import org.apache.cxf.test.AbstractCXFTest;
+import org.easyframe.cxfplus.support.DefaultWsFactory;
+import org.easyframe.cxfplus.support.IWebService;
+import org.easyframe.cxfplus.support.ServiceDefinition;
+import org.easyframe.cxfplus.support.ServiceProcessor;
+import org.easyframe.jaxws.interceptors.TraceHandler;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-
-import com.googlecode.jef.ws.interceptors.TraceHandler;
 
 
 /**
@@ -55,7 +58,7 @@ public abstract class CXFTestBase extends AbstractCXFTest {
 	 * @return ff
 	 *  
 	 */
-	protected WebServiceFactory getFactory(){
+	protected ServiceProcessor getFactory(){
 		return new DefaultWsFactory();
 	}
 
@@ -291,7 +294,7 @@ public abstract class CXFTestBase extends AbstractCXFTest {
 	 */
 	private Server createLocalJaxWsService(Class<?> intf, IWebService bean) {
 		String url = "local://" + intf.getName();
-		WsContext ws = getFactory().createServerBean(bean, intf);
+		ServiceDefinition ws = getFactory().processServiceDef(new ServiceDefinition(intf.getSimpleName(),intf,bean));
 		if (ws == null)
 			return null;
 		JaxWsServerFactoryBean sf = new JaxWsServerFactoryBean(new CXFPlusServiceFactoryBean());
@@ -312,7 +315,7 @@ public abstract class CXFTestBase extends AbstractCXFTest {
 	 */
 	private Server createLocalService(Class<?> intf, IWebService bean) {
 		String url = "local://" + intf.getName();
-		WsContext ws = getFactory().createServerBean(bean, intf);
+		ServiceDefinition ws = getFactory().processServiceDef(new ServiceDefinition(intf.getSimpleName(), intf, bean));
 		if (ws == null)
 			return null;
 		ServerFactoryBean sf = new ServerFactoryBean(new CXFPlusServiceBean());

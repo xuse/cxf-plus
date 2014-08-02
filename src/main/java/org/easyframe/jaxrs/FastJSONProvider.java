@@ -18,20 +18,26 @@ import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.cxf.helpers.IOUtils;
 import org.easyframe.fastjson.JSON;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.easyframe.fastjson.serializer.SerializerFeature;
 
 @Produces({ "application/json", "application/*+json" })
-@Consumes({ "application/json", "application/*+json" })
+@Consumes({ "application/json", "application/*+json" ,"application/fast-json"})
 @Provider
 public class FastJSONProvider implements MessageBodyWriter<Object>,MessageBodyReader<Object>{
-	private static final Logger LOG = LoggerFactory.getLogger(FastJSONProvider.class);
+//	private static final Logger LOG = LoggerFactory.getLogger(FastJSONProvider.class);
 	private boolean enableReader=true;
+	private String encoding="UTF-8";
+	private SerializerFeature[]  feature=new SerializerFeature[0];
+	private boolean writeClassNames = false;
 	
-	public FastJSONProvider(boolean enableRead){
+	public FastJSONProvider(boolean enableRead,boolean writeClassNames){
 		this.enableReader=enableRead;
+		if(writeClassNames){
+			setFeature(SerializerFeature.WriteClassName);
+		}
 	}
 	
 	static class ObjectJSON{
@@ -46,6 +52,23 @@ public class FastJSONProvider implements MessageBodyWriter<Object>,MessageBodyRe
 		}
 	};
 	
+	public String getEncoding() {
+		return encoding;
+	}
+
+	public void setEncoding(String encoding) {
+		this.encoding = encoding;
+	}
+
+	public SerializerFeature[] getFeature() {
+		return feature;
+	}
+
+	public void setFeature(SerializerFeature... feature) {
+		this.feature = feature;
+		this.writeClassNames=ArrayUtils.contains(feature, SerializerFeature.WriteClassName);
+	}
+	
 	public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
 		return mediaType.getSubtype().endsWith("json");
 	}
@@ -54,7 +77,7 @@ public class FastJSONProvider implements MessageBodyWriter<Object>,MessageBodyRe
 		ObjectJSON json=cache.get();
 		json.obj=t;
 		try {
-			json.json=JSON.toJSONString(t).getBytes("UTF-8");
+			json.json=JSON.toJSONString(t,feature).getBytes(encoding);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -62,18 +85,21 @@ public class FastJSONProvider implements MessageBodyWriter<Object>,MessageBodyRe
 	}
 
 	public void writeTo(Object t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException, WebApplicationException {
-		httpHeaders.putSingle("Content-Type", "text/plain");
+		if(writeClassNames){
+			httpHeaders.putSingle("Content-Type", "application/fast-json");	
+		}
 		ObjectJSON json=cache.get();
 		if(json.obj==t){
 			IOUtils.copy(new ByteArrayInputStream(json.json), entityStream);
 			json.obj=null;
 			json.json=null;
 		}else{
-			JSON.writeJSONStringTo(t, new OutputStreamWriter(entityStream, "UTF-8"));
+			JSON.writeJSONStringTo(t, new OutputStreamWriter(entityStream, encoding),feature);
 		}
 	}
 
 	public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
+		if(mediaType.getSubtype().endsWith("fast-json"))return true;
 		return enableReader && mediaType.getSubtype().endsWith("json");
 	}
 

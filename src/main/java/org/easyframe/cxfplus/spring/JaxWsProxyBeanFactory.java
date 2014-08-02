@@ -1,8 +1,10 @@
-package com.googlecode.jef.ws;
+package org.easyframe.cxfplus.spring;
 
 import jef.tools.Assert;
 import jef.tools.StringUtils;
 
+import org.easyframe.cxfplus.support.DefaultWsFactory;
+import org.easyframe.cxfplus.support.ServiceProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.FactoryBean;
@@ -22,10 +24,10 @@ public class JaxWsProxyBeanFactory implements FactoryBean<Object>,InitializingBe
 	
 	private Class<?> clz;
 	private Object service;
-	private WebServiceFactory factory;
+	private ServiceProcessor factory;
 	
 	@Autowired(required=false)
-	public void setFactory(WebServiceFactory factory) {
+	public void setFactory(ServiceProcessor factory) {
 		this.factory = factory;
 	}
 
@@ -39,7 +41,7 @@ public class JaxWsProxyBeanFactory implements FactoryBean<Object>,InitializingBe
 	
 	public Object getObject() throws Exception {
 		if(service==null){
-			WebServiceFactory factory=this.factory;
+			ServiceProcessor factory=this.factory;
 			if(factory==null){
 				factory=DefaultWsFactory.getInstance(false);
 			}
