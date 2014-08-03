@@ -10,7 +10,6 @@ import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactoryBean;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
-import org.easyframe.jaxrs.FastJSONProvider;
 import org.easyframe.jaxrs.People;
 import org.easyframe.jaxrs.PeopleService;
 import org.easyframe.jaxrs.PeopleServiceXml;
@@ -24,22 +23,25 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:test-client.xml" })
+@ContextConfiguration(locations = { "classpath:spring-test-client.xml" })
 public class ClientTest extends org.junit.Assert implements InitializingBean{
-	@Resource
-	private PeopleService peopleService;
+
 	
 	@Resource
 	private PeopleService peopleServiceWs;
+	@Resource 
+	private HelloService helloServiceWs;
 	
+	
+	@Resource
+	private PeopleService peopleService;
 	@Resource
 	private PeopleServiceXml peopleServiceXml;
 	
 	@Resource
 	private HelloService helloService;
 	
-	@Resource 
-	private HelloService helloServiceWs;
+
 	
 	
 	
@@ -124,23 +126,24 @@ public class ClientTest extends org.junit.Assert implements InitializingBean{
 	}
 	
 	//调试用
-	@Ignore
 	@Test
 	public void rawTest(){
 		JAXRSClientFactoryBean bean=new JAXRSClientFactoryBean();
-		bean.setAddress("http://10.17.35.103:8080/dubbo-test/services/rest/vision.apollo.jaxrs.PeopleService");
+		bean.setAddress("http://localhost:8080/cxf-plus/ws/rest/");
 		                 
-		bean.setServiceClass(PeopleService.class);
-		bean.setProvider(new FastJSONProvider(true, false));
+		bean.setServiceClass(PeopleServiceXml.class);
+//		bean.setProvider(new FastJSONProvider(true, false));
 		
 		bean.getInInterceptors().add(new LoggingInInterceptor());
 		bean.getOutInterceptors().add(new LoggingOutInterceptor());
 		
-		PeopleService s=(PeopleService)bean.create();
+		PeopleServiceXml s=(PeopleServiceXml)bean.create();
 		List<People> r=s.getAll();
+		
+		System.out.println("-------------------");
 		System.out.println("得到用户"+r.size());
-		int id=s.create(new People("jiyi@163.net","jiyi","lu"));
-		System.out.println(id);
+//		int id=s.create(new People("jiyi@163.net","jiyi","lu"));
+//		System.out.println(id);
 	}
 
 	public void afterPropertiesSet() throws Exception {
@@ -150,4 +153,6 @@ public class ClientTest extends org.junit.Assert implements InitializingBean{
 		Assert.notNull(helloService);
 		Assert.notNull(helloServiceWs);
 	}
+	
+
 }
