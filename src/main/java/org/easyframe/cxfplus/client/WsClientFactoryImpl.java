@@ -21,7 +21,12 @@ public class WsClientFactoryImpl implements ClientFactory{
 	private long receiveTimeout;
 	private boolean trace;
 	
-	public WsClientFactoryImpl() {
+	private static ClientFactory DEFAULT= new WsClientFactoryImpl();
+	public static ClientFactory getDefault(){
+		return DEFAULT;
+	}
+	
+	private WsClientFactoryImpl() {
 		this(true,true);
 	}
 	

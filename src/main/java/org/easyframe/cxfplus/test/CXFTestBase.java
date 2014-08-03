@@ -44,7 +44,7 @@ import org.w3c.dom.Node;
 public abstract class CXFTestBase extends AbstractCXFTest {
 	//Spring的context
 	protected static ApplicationContext context;
-	private ClientFactory jaxwsPlus=new WsClientFactoryImpl();
+	private ClientFactory jaxwsPlus=WsClientFactoryImpl.getDefault();
 	private ClientFactory rpcPlus=new WsClientFactoryImpl(false,true);
 	
 	/**

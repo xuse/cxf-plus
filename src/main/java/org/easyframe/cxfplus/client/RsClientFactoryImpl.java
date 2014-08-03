@@ -8,8 +8,21 @@ import org.easyframe.jaxrs.FastJSONProvider;
 
 public class RsClientFactoryImpl implements ClientFactory{
 
+	private static final ClientFactory DEFAULT=new RsClientFactoryImpl();
+	
+	public static ClientFactory getDefault(){
+		return DEFAULT;
+	}
+	
+	public RsClientFactoryImpl(){
+	}
+	
 	private boolean trace;
 	
+	public boolean isTrace() {
+		return trace;
+	}
+
 	@SuppressWarnings("unchecked")
 	public <T> T createProxy(String url, Class<T> clz) {
 		JAXRSClientFactoryBean proxyFactoryBean = new JAXRSClientFactoryBean();

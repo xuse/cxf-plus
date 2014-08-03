@@ -13,8 +13,8 @@ import jef.tools.ArrayUtils;
 import jef.tools.StringUtils;
 import jef.tools.reflect.BeanUtils;
 
+import org.apache.cxf.Bus;
 import org.apache.cxf.BusFactory;
-import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.frontend.ServerFactoryBean;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
@@ -53,6 +53,14 @@ public class CXFPlusServlet extends CXFNonSpringServlet {
 	private String httpPrefix="";
 	private boolean trace;
 	
+	public String getRestBasePath() {
+		return restBasePath;
+	}
+
+	public void setRestBasePath(String restBasePath) {
+		this.restBasePath = restBasePath;
+	}
+
 	/**
 	 * 如果是SimpleMode就直接用ServerFactoryBean发布，不用JaxWs方式发布
 	 */
@@ -229,29 +237,38 @@ public class CXFPlusServlet extends CXFNonSpringServlet {
 		String[] packageName = StringUtils.split(serviceClass.getPackage().getName(), ".");
 		ArrayUtils.reverse(packageName);
 		String servName = service.getServiceClass().getSimpleName();
+		String address=httpPrefix+service.getPath();
 		if (this.wsSimpleMode) {
-			ServerFactoryBean bean = new ServerFactoryBean(new CXFPlusServiceBean());
-			bean.setServiceClass(serviceClass);
-			bean.setServiceBean(serviceBean);
-			bean.setServiceName(new QName("http://" + StringUtils.join(packageName, ".") + "/", servName));
-			bean.setAddress(httpPrefix+service.getPath());
+			ServerFactoryBean sf = new ServerFactoryBean(new CXFPlusServiceBean());
+			sf.setServiceClass(serviceClass);
+			sf.setServiceBean(serviceBean);
+			sf.setServiceName(new QName("http://" + StringUtils.join(packageName, ".") + "/", servName));
+			sf.setAddress(address);
 			if (this.trace) {
-				bean.getInInterceptors().add(new LoggingInInterceptor());
-				bean.getOutInterceptors().add(new LoggingOutInterceptor());
+				sf.getInInterceptors().add(new LoggingInInterceptor());
+				sf.getOutInterceptors().add(new LoggingOutInterceptor());
 			}
-			Server server = bean.create();
-			@SuppressWarnings("unused")
-			org.apache.cxf.endpoint.EndpointImpl epimpl = (org.apache.cxf.endpoint.EndpointImpl) server.getEndpoint();
-			// epimpl.publish();
+			sf.create();
 		} else {
-			CXFPlusServiceFactoryBean myFac = new CXFPlusServiceFactoryBean();
-			org.apache.cxf.jaxws.EndpointImpl epimpl = new org.apache.cxf.jaxws22.EndpointImpl(getBus(), serviceBean, new JaxWsServerFactoryBean(myFac));
-			epimpl.setServiceName(new QName("http://" + StringUtils.join(packageName, ".") + "/", servName));
-			if (this.trace) {
-				epimpl.getHandlers().add(new TraceHandler());
+			JaxWsServerFactoryBean sf=new JaxWsServerFactoryBean(new CXFPlusServiceFactoryBean());
+			sf.setBus(getBus());
+			sf.setServiceBean(serviceBean);
+			sf.setServiceClass(serviceClass);
+			sf.setAddress(address);
+			sf.setServiceName(new QName("http://" + StringUtils.join(packageName, ".") + "/", servName));
+			if(trace){
+				sf.getHandlers().add(new TraceHandler());
 			}
-			LogUtil.show("Starting Webservice: " + service.getPath());
-			epimpl.publish(service.getPath());
+			sf.create();
+			
+//			org.apache.cxf.jaxws.EndpointImpl epimpl = new org.apache.cxf.jaxws22.EndpointImpl(getBus(), serviceBean, new JaxWsServerFactoryBean(new CXFPlusServiceFactoryBean()));
+//			epimpl.setServiceName(new QName("http://" + StringUtils.join(packageName, ".") + "/", servName));
+//			if (this.trace) {
+//				epimpl.getHandlers().add(new TraceHandler());
+//			}
+//			epimpl.publish(address);
+			
+			LogUtil.show("Starting Webservice: " + address);
 		}
 	}
 	
@@ -261,7 +278,7 @@ public class CXFPlusServlet extends CXFNonSpringServlet {
 		for (Entry<Class<?>, ResourceProvider> e : springResources.entrySet()) {
 			sf.setResourceClasses(e.getKey());
 			sf.setResourceProvider(e.getKey(), e.getValue());
-			LogUtil.show("Publishing JAX-RS Service "+ e+" at "+ restBasePath);
+			LogUtil.show("Publishing JAX-RS Service "+ e+" at "+ httpPrefix+restBasePath);
 		}
 		sf.setAddress(httpPrefix+restBasePath);
 		if(restUseFastJson==1){
