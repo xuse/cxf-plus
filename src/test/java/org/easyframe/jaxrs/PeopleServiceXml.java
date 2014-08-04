@@ -13,7 +13,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("/people")
+/**
+ * 当两个接口的地址一样时，可能因为consumeType不一致而造成POST请求失效，get请求依然有效。。。
+ * @author jiyi
+ *
+ */
+@Path("/peoplex")
 public interface PeopleServiceXml {
 	
 	@Produces({ MediaType.APPLICATION_XML })

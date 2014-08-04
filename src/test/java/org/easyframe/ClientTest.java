@@ -127,6 +127,7 @@ public class ClientTest extends org.junit.Assert implements InitializingBean{
 	
 	//调试用
 	@Test
+	@Ignore
 	public void rawTest(){
 		JAXRSClientFactoryBean bean=new JAXRSClientFactoryBean();
 		bean.setAddress("http://localhost:8080/cxf-plus/ws/rest/");
