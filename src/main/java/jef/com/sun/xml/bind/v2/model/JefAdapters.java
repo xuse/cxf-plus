@@ -51,19 +51,19 @@ public class JefAdapters {
 			}
 
 			{//如果用户没有配置，那么增加默认的Object的序列化支持办法
-				if(!jefTypeAdapters.containsKey(Object.class)){
-					Class adapter = null;
-					try {
-						if ("false".equals(System.getProperty("jef.ws.fulljson"))) {
-							adapter = Class.forName("jef.common.ObjectJsonCodec");	//纯正的Json序列化方案
-						} else {
-							adapter = Class.forName("jef.common.ObjectFullJsonCodec");//默认使用全序列化解决方案
-						}
-						XmlJavaTypeAdapter quick = new XmlJavaTypeAdapterQuick(Object.class, adapter.asSubclass(XmlAdapter.class));
-						jefTypeAdapters.put(Object.class, quick);
-					} catch (ClassNotFoundException e) {
-					}	
-				}
+//				if(!jefTypeAdapters.containsKey(Object.class)){
+//					Class adapter = null;
+//					try {
+//						if ("false".equals(System.getProperty("jef.ws.fulljson"))) {
+//							adapter = Class.forName("jef.common.ObjectJsonCodec");	//纯正的Json序列化方案
+//						} else {
+//							adapter = Class.forName("jef.common.ObjectFullJsonCodec");//默认使用全序列化解决方案
+//						}
+//						XmlJavaTypeAdapter quick = new XmlJavaTypeAdapterQuick(Object.class, adapter.asSubclass(XmlAdapter.class));
+//						jefTypeAdapters.put(Object.class, quick);
+//					} catch (ClassNotFoundException e) {
+//					}
+//				}
 			}
 		}
 		if (jefQualified == null) {
