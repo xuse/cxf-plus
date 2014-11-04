@@ -42,7 +42,7 @@ import java.util.Collection;
 
 import javax.xml.namespace.QName;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 import jef.com.sun.xml.bind.v2.model.nav.Navigator;
 
@@ -117,7 +117,7 @@ public final class TypeReference {
         // if we are to reinstitute this check, check JAXB annotations only 
         // assert annotations.length==0;   // not designed to work with adapters.
 
-        Type base = Navigator.REFLECTION.getBaseClass(type, new ClassWrapper(Collection.class));
+        Type base = Navigator.REFLECTION.getBaseClass(type, new ClassEx(Collection.class));
         if(base==null)
             return this;    // not a collection
 

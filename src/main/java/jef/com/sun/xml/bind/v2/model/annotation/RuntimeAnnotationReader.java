@@ -38,12 +38,12 @@ package jef.com.sun.xml.bind.v2.model.annotation;
 
 import java.lang.reflect.Type;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.FieldEx;
 import jef.tools.reflect.MethodEx;
 
 /**
  * @author Kohsuke Kawaguchi
  */
-public interface RuntimeAnnotationReader extends AnnotationReader<Type,ClassWrapper,FieldEx,MethodEx> {
+public interface RuntimeAnnotationReader extends AnnotationReader<Type,ClassEx,FieldEx,MethodEx> {
 }

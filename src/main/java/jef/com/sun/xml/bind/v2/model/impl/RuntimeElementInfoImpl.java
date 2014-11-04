@@ -45,7 +45,7 @@ import java.util.List;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.FieldEx;
 import jef.tools.reflect.MethodEx;
 
@@ -64,13 +64,13 @@ import jef.com.sun.xml.bind.v2.runtime.reflect.Accessor;
 /**
  * @author Kohsuke Kawaguchi
  */
-final class RuntimeElementInfoImpl extends ElementInfoImpl<Type,ClassWrapper,FieldEx,MethodEx>
+final class RuntimeElementInfoImpl extends ElementInfoImpl<Type,ClassEx,FieldEx,MethodEx>
     implements RuntimeElementInfo {
     
     public RuntimeElementInfoImpl(RuntimeModelBuilder modelBuilder, RegistryInfoImpl registry, MethodEx method) throws IllegalAnnotationException {
         super(modelBuilder, registry, method);
 
-        Adapter<Type,ClassWrapper> a = getProperty().getAdapter();
+        Adapter<Type,ClassEx> a = getProperty().getAdapter();
 
         if(a!=null)
             adapterType = (Class<? extends XmlAdapter>) a.adapterType.getWrappered();

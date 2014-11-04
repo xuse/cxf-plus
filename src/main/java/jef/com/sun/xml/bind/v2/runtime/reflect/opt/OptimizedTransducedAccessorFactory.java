@@ -45,7 +45,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.FieldEx;
 
 import jef.com.sun.xml.bind.Util;
@@ -91,11 +91,11 @@ public abstract class OptimizedTransducedAccessorFactory {
         // consider using an optimized TransducedAccessor implementations.
         Class opt=null;
 
-        TypeInfo<Type,ClassWrapper> parent = prop.parent();
+        TypeInfo<Type,ClassEx> parent = prop.parent();
         if(!(parent instanceof RuntimeClassInfo))
             return null;
         
-        ClassWrapper dc = ((RuntimeClassInfo)parent).getClazz();
+        ClassEx dc = ((RuntimeClassInfo)parent).getClazz();
         String newClassName = toVMClassName(dc.getWrappered())+"_JaxbXducedAccessor_"+prop.getName();
 
 

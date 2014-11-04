@@ -57,7 +57,7 @@ import jef.com.sun.xml.bind.v2.ContextFactory;
 import jef.com.sun.xml.bind.v2.model.annotation.RuntimeAnnotationReader;
 import jef.com.sun.xml.bind.v2.model.nav.Navigator;
 import jef.com.sun.xml.bind.v2.model.runtime.RuntimeTypeInfoSet;
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 /**
  * {@link JAXBContext} enhanced with JAXB RI specific functionalities.
@@ -372,7 +372,7 @@ public abstract class JAXBRIContext extends JAXBContext {
      * @since 2.0 FCS
      */
     public static @Nullable Type getBaseType(@NotNull Type type, @NotNull Class baseType) {
-        return Navigator.REFLECTION.getBaseClass(type,new ClassWrapper(baseType));
+        return Navigator.REFLECTION.getBaseClass(type,new ClassEx(baseType));
     }
 
 

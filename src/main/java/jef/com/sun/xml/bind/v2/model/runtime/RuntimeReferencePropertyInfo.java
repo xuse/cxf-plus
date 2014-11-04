@@ -39,13 +39,13 @@ package jef.com.sun.xml.bind.v2.model.runtime;
 import java.lang.reflect.Type;
 import java.util.Set;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 import jef.com.sun.xml.bind.v2.model.core.ReferencePropertyInfo;
 
 /**
  * @author Kohsuke Kawaguchi
  */
-public interface RuntimeReferencePropertyInfo extends ReferencePropertyInfo<Type,ClassWrapper>, RuntimePropertyInfo {
+public interface RuntimeReferencePropertyInfo extends ReferencePropertyInfo<Type,ClassEx>, RuntimePropertyInfo {
     Set<? extends RuntimeElement> getElements();
 }

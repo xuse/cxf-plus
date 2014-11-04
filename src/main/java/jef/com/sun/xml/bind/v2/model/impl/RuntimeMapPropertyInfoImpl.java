@@ -39,7 +39,7 @@ package jef.com.sun.xml.bind.v2.model.impl;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.FieldEx;
 import jef.tools.reflect.MethodEx;
 
@@ -51,10 +51,10 @@ import jef.com.sun.xml.bind.v2.runtime.reflect.Accessor;
 /**
  * @author Kohsuke Kawaguchi
  */
-class RuntimeMapPropertyInfoImpl extends MapPropertyInfoImpl<Type,ClassWrapper,FieldEx,MethodEx> implements RuntimeMapPropertyInfo {
+class RuntimeMapPropertyInfoImpl extends MapPropertyInfoImpl<Type,ClassEx,FieldEx,MethodEx> implements RuntimeMapPropertyInfo {
     private final Accessor acc;
 
-    RuntimeMapPropertyInfoImpl(RuntimeClassInfoImpl classInfo, PropertySeed<Type,ClassWrapper,FieldEx,MethodEx> seed) {
+    RuntimeMapPropertyInfoImpl(RuntimeClassInfoImpl classInfo, PropertySeed<Type,ClassEx,FieldEx,MethodEx> seed) {
         super(classInfo, seed);
         this.acc = ((RuntimeClassInfoImpl.RuntimePropertySeed)seed).getAccessor();
     }

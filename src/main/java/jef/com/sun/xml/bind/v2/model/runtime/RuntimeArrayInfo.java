@@ -38,7 +38,7 @@ package jef.com.sun.xml.bind.v2.model.runtime;
 
 import java.lang.reflect.Type;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 import jef.com.sun.xml.bind.v2.model.core.ArrayInfo;
 import jef.com.sun.xml.bind.v2.model.core.TypeInfo;
@@ -46,7 +46,7 @@ import jef.com.sun.xml.bind.v2.model.core.TypeInfo;
 /**
  * @author Kohsuke Kawaguchi
  */
-public interface RuntimeArrayInfo extends ArrayInfo<Type,ClassWrapper>, RuntimeNonElement {
+public interface RuntimeArrayInfo extends ArrayInfo<Type,ClassEx>, RuntimeNonElement {
     /**
      * Represents <tt>T[]</tt>.
      *

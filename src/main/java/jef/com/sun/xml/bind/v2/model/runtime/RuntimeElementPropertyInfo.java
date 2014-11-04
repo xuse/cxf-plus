@@ -40,14 +40,14 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 import jef.com.sun.xml.bind.v2.model.core.ElementPropertyInfo;
 
 /**
  * @author Kohsuke Kawaguchi
  */
-public interface RuntimeElementPropertyInfo extends ElementPropertyInfo<Type,ClassWrapper>, RuntimePropertyInfo {
+public interface RuntimeElementPropertyInfo extends ElementPropertyInfo<Type,ClassEx>, RuntimePropertyInfo {
     /** {@inheritDoc} */
     Collection<? extends RuntimeTypeInfo> ref();
 

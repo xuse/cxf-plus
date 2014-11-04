@@ -40,7 +40,7 @@ import java.lang.reflect.Type;
 
 import javax.xml.namespace.QName;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 import jef.com.sun.xml.bind.v2.model.core.LeafInfo;
 import jef.com.sun.xml.bind.v2.runtime.Transducer;
@@ -48,7 +48,7 @@ import jef.com.sun.xml.bind.v2.runtime.Transducer;
 /**
  * @author Kohsuke Kawaguchi
  */
-public interface RuntimeLeafInfo extends LeafInfo<Type,ClassWrapper>, RuntimeNonElement {
+public interface RuntimeLeafInfo extends LeafInfo<Type,ClassEx>, RuntimeNonElement {
     /**
      * {@inheritDoc}
      *
@@ -63,7 +63,7 @@ public interface RuntimeLeafInfo extends LeafInfo<Type,ClassWrapper>, RuntimeNon
      * Note that the returned {@link Class} object does not necessarily represents
      * a class declaration. It can be primitive types.
      */
-    ClassWrapper getClazz();
+    ClassEx getClazz();
 
     /**
      * Returns all the type names recognized by this type for unmarshalling.

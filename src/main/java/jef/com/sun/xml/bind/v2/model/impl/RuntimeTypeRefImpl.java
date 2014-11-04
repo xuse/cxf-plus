@@ -40,7 +40,7 @@ import java.lang.reflect.Type;
 
 import javax.xml.namespace.QName;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 import jef.com.sun.xml.bind.v2.model.runtime.RuntimeNonElement;
 import jef.com.sun.xml.bind.v2.model.runtime.RuntimePropertyInfo;
@@ -50,7 +50,7 @@ import jef.com.sun.xml.bind.v2.runtime.Transducer;
 /**
  * @author Kohsuke Kawaguchi
  */
-final class RuntimeTypeRefImpl extends TypeRefImpl<Type,ClassWrapper> implements RuntimeTypeRef {
+final class RuntimeTypeRefImpl extends TypeRefImpl<Type,ClassEx> implements RuntimeTypeRef {
 
     public RuntimeTypeRefImpl(RuntimeElementPropertyInfoImpl elementPropertyInfo, QName elementName, Type type, boolean isNillable, String defaultValue) {
         super(elementPropertyInfo, elementName, type, isNillable, defaultValue);

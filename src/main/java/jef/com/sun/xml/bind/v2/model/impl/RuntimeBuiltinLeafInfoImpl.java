@@ -87,7 +87,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import jef.common.log.LogUtil;
 import jef.tools.StringUtils;
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 import org.xml.sax.SAXException;
 
@@ -116,7 +116,7 @@ import jef.com.sun.xml.bind.v2.util.DataSourceSource;
  * @author Kohsuke Kawaguchi
  */
 
-public abstract class RuntimeBuiltinLeafInfoImpl<T> extends BuiltinLeafInfoImpl<Type,ClassWrapper> implements RuntimeBuiltinLeafInfo, Transducer<T> {
+public abstract class RuntimeBuiltinLeafInfoImpl<T> extends BuiltinLeafInfoImpl<Type,ClassEx> implements RuntimeBuiltinLeafInfo, Transducer<T> {
 	/**
      * Format string for the {@link XMLGregorianCalendar}.
      */
@@ -138,8 +138,8 @@ public abstract class RuntimeBuiltinLeafInfoImpl<T> extends BuiltinLeafInfoImpl<
         LEAVES.put(type,this);
     }
 
-    public final ClassWrapper getClazz() {
-        return new ClassWrapper(getType());
+    public final ClassEx getClazz() {
+        return new ClassEx(getType());
     }
 
 

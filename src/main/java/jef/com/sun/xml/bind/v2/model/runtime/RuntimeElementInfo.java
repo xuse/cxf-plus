@@ -40,14 +40,14 @@ import java.lang.reflect.Type;
 
 import javax.xml.bind.JAXBElement;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 import jef.com.sun.xml.bind.v2.model.core.ElementInfo;
 
 /**
  * @author Kohsuke Kawaguchi
  */
-public interface RuntimeElementInfo extends ElementInfo<Type,ClassWrapper>, RuntimeElement {
+public interface RuntimeElementInfo extends ElementInfo<Type,ClassEx>, RuntimeElement {
     RuntimeClassInfo getScope();
 
     RuntimeElementPropertyInfo getProperty();

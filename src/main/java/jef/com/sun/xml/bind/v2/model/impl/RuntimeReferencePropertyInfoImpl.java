@@ -39,7 +39,7 @@ package jef.com.sun.xml.bind.v2.model.impl;
 import java.lang.reflect.Type;
 import java.util.Set;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.FieldEx;
 import jef.tools.reflect.MethodEx;
 
@@ -50,12 +50,12 @@ import jef.com.sun.xml.bind.v2.runtime.reflect.Accessor;
 /**
  * @author Kohsuke Kawaguchi
  */
-class RuntimeReferencePropertyInfoImpl extends ReferencePropertyInfoImpl<Type,ClassWrapper,FieldEx,MethodEx>
+class RuntimeReferencePropertyInfoImpl extends ReferencePropertyInfoImpl<Type,ClassEx,FieldEx,MethodEx>
     implements RuntimeReferencePropertyInfo {
 
     private final Accessor acc;
 
-    public RuntimeReferencePropertyInfoImpl(RuntimeClassInfoImpl classInfo, PropertySeed<Type,ClassWrapper,FieldEx,MethodEx> seed) {
+    public RuntimeReferencePropertyInfoImpl(RuntimeClassInfoImpl classInfo, PropertySeed<Type,ClassEx,FieldEx,MethodEx> seed) {
         super(classInfo,seed);
         Accessor rawAcc = ((RuntimeClassInfoImpl.RuntimePropertySeed)seed).getAccessor();
         if(getAdapter()!=null && !isCollection())

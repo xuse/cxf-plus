@@ -38,12 +38,11 @@ package jef.com.sun.xml.bind.v2.model.runtime;
 
 import java.lang.reflect.Type;
 
-import jef.tools.reflect.ClassWrapper;
-
 import jef.com.sun.xml.bind.v2.model.core.EnumLeafInfo;
+import jef.tools.reflect.ClassEx;
 
 /**
  * @author Kohsuke Kawaguchi
  */
-public interface RuntimeEnumLeafInfo extends EnumLeafInfo<Type,ClassWrapper>, RuntimeLeafInfo {
+public interface RuntimeEnumLeafInfo extends EnumLeafInfo<Type,ClassEx>, RuntimeLeafInfo {
 }

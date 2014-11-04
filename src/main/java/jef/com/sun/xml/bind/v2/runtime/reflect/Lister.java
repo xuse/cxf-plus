@@ -56,7 +56,7 @@ import java.util.concurrent.Callable;
 
 import javax.xml.bind.JAXBException;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 import org.xml.sax.SAXException;
 
@@ -127,7 +127,7 @@ public abstract class Lister<BeanT,PropT,ItemT,PackT> {
      *      adapter to be used for individual items. can be null.
      */
     public static <BeanT,PropT,ItemT,PackT>
-        Lister<BeanT,PropT,ItemT,PackT> create(Type fieldType,ID idness, Adapter<Type,ClassWrapper> adapter) {
+        Lister<BeanT,PropT,ItemT,PackT> create(Type fieldType,ID idness, Adapter<Type,ClassEx> adapter) {
 
         Class rawType = Navigator.REFLECTION.erasure(fieldType);
         Class itemType;
@@ -138,7 +138,7 @@ public abstract class Lister<BeanT,PropT,ItemT,PackT> {
             l = getArrayLister(itemType);
         } else
         if( Collection.class.isAssignableFrom(rawType) ) {
-            Type bt = Navigator.REFLECTION.getBaseClass(fieldType,new ClassWrapper(Collection.class));
+            Type bt = Navigator.REFLECTION.getBaseClass(fieldType,new ClassEx(Collection.class));
             if(bt instanceof ParameterizedType)
                 itemType = Navigator.REFLECTION.erasure(((ParameterizedType)bt).getActualTypeArguments()[0]);
             else

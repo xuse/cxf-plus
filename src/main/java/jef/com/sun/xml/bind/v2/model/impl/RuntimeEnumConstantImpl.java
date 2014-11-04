@@ -38,17 +38,17 @@ package jef.com.sun.xml.bind.v2.model.impl;
 
 import java.lang.reflect.Type;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.FieldEx;
 import jef.tools.reflect.MethodEx;
 
 /**
  * @author Kohsuke Kawaguchi
  */
-final class RuntimeEnumConstantImpl extends EnumConstantImpl<Type,ClassWrapper,FieldEx,MethodEx> {
+final class RuntimeEnumConstantImpl extends EnumConstantImpl<Type,ClassEx,FieldEx,MethodEx> {
     public RuntimeEnumConstantImpl(
         RuntimeEnumLeafInfoImpl owner, String name, String lexical,
-        EnumConstantImpl<Type,ClassWrapper,FieldEx,MethodEx> next) {
+        EnumConstantImpl<Type,ClassEx,FieldEx,MethodEx> next) {
         super(owner, name, lexical, next);
     }
 }

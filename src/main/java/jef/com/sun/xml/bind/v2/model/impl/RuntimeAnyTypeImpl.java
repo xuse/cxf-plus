@@ -38,7 +38,7 @@ package jef.com.sun.xml.bind.v2.model.impl;
 
 import java.lang.reflect.Type;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 import jef.com.sun.xml.bind.v2.model.nav.Navigator;
 import jef.com.sun.xml.bind.v2.model.runtime.RuntimeNonElement;
@@ -47,7 +47,7 @@ import jef.com.sun.xml.bind.v2.runtime.Transducer;
 /**
  * @author Kohsuke Kawaguchi
  */
-final class RuntimeAnyTypeImpl extends AnyTypeImpl<Type,ClassWrapper> implements RuntimeNonElement {
+final class RuntimeAnyTypeImpl extends AnyTypeImpl<Type,ClassEx> implements RuntimeNonElement {
     private RuntimeAnyTypeImpl() {
         super(Navigator.REFLECTION);
     }

@@ -41,7 +41,7 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.FieldEx;
 import jef.tools.reflect.MethodEx;
 
@@ -53,16 +53,16 @@ import jef.com.sun.xml.bind.v2.model.nav.ReflectionNavigator;
  *
  * @author Kohsuke Kawaguchi
  */
-public interface RuntimeTypeInfoSet extends TypeInfoSet<Type,ClassWrapper,FieldEx,MethodEx>{
+public interface RuntimeTypeInfoSet extends TypeInfoSet<Type,ClassEx,FieldEx,MethodEx>{
     Map<Type,? extends RuntimeArrayInfo> arrays();
-    Map<ClassWrapper, ? extends RuntimeClassInfo> beans();
+    Map<ClassEx, ? extends RuntimeClassInfo> beans();
     Map<Type,? extends RuntimeBuiltinLeafInfo> builtins();
-    Map<ClassWrapper,? extends RuntimeEnumLeafInfo> enums();
+    Map<ClassEx,? extends RuntimeEnumLeafInfo> enums();
     RuntimeNonElement getTypeInfo( Type type );
     RuntimeNonElement getAnyTypeInfo();
-    RuntimeNonElement getClassInfo( ClassWrapper type );
-    RuntimeElementInfo getElementInfo( ClassWrapper scope, QName name );
-    Map<QName,? extends RuntimeElementInfo> getElementMappings( ClassWrapper scope );
+    RuntimeNonElement getClassInfo( ClassEx type );
+    RuntimeElementInfo getElementInfo( ClassEx scope, QName name );
+    Map<QName,? extends RuntimeElementInfo> getElementMappings( ClassEx scope );
     Iterable<? extends RuntimeElementInfo> getAllElements();
     ReflectionNavigator getNavigator();
 }

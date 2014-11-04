@@ -39,7 +39,7 @@ package jef.com.sun.xml.bind.v2.model.impl;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.FieldEx;
 import jef.tools.reflect.MethodEx;
 
@@ -50,10 +50,10 @@ import jef.com.sun.xml.bind.v2.model.runtime.RuntimePropertyInfo;
 /**
  * @author Kohsuke Kawaguchi
  */
-class RuntimeAttributePropertyInfoImpl extends AttributePropertyInfoImpl<Type,ClassWrapper,FieldEx,MethodEx>
+class RuntimeAttributePropertyInfoImpl extends AttributePropertyInfoImpl<Type,ClassEx,FieldEx,MethodEx>
     implements RuntimeAttributePropertyInfo {
 
-    RuntimeAttributePropertyInfoImpl(RuntimeClassInfoImpl classInfo, PropertySeed<Type,ClassWrapper,FieldEx,MethodEx> seed) {
+    RuntimeAttributePropertyInfoImpl(RuntimeClassInfoImpl classInfo, PropertySeed<Type,ClassEx,FieldEx,MethodEx> seed) {
         super(classInfo, seed);
     }
 

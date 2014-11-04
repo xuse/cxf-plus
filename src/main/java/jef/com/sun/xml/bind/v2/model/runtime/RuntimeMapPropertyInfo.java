@@ -38,14 +38,14 @@ package jef.com.sun.xml.bind.v2.model.runtime;
 
 import java.lang.reflect.Type;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 import jef.com.sun.xml.bind.v2.model.core.MapPropertyInfo;
 
 /**
  * @author Kohsuke Kawaguchi
  */
-public interface RuntimeMapPropertyInfo extends RuntimePropertyInfo, MapPropertyInfo<Type,ClassWrapper> {
+public interface RuntimeMapPropertyInfo extends RuntimePropertyInfo, MapPropertyInfo<Type,ClassEx> {
     RuntimeNonElement getKeyType();
     RuntimeNonElement getValueType();
 }

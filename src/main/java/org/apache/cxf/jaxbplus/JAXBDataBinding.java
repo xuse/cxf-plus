@@ -52,7 +52,7 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.FieldEx;
 import jef.tools.reflect.GenericUtils;
 import jef.tools.reflect.MethodEx;
@@ -569,7 +569,7 @@ public class JAXBDataBinding extends AbstractDataBinding
         List<Method> jaxbMethods = new ArrayList<Method>(partNames.size());
         List<Field> fields = new ArrayList<Field>(partNames.size());
         
-        ClassWrapper valueClass = new ClassWrapper(wrapperType);
+        ClassEx valueClass = new ClassEx(wrapperType);
         MethodEx allMethods[] = valueClass.getMethods();
         String packageName = PackageUtils.getPackageName(wrapperType);
        
@@ -730,7 +730,7 @@ public class JAXBDataBinding extends AbstractDataBinding
                                  objectFactory);
     }
 
-    private static FieldEx getElField(String partName, ClassWrapper wrapperType) {
+    private static FieldEx getElField(String partName, ClassEx wrapperType) {
         String fieldName = JAXBUtils.nameToIdentifier(partName, JAXBUtils.IdentifierType.VARIABLE);
         for (FieldEx field : wrapperType.getDeclaredFields()) {
             XmlElement el = field.getAnnotation(XmlElement.class);

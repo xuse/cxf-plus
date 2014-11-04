@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.namespace.QName;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 import org.apache.cxf.common.classloader.ClassLoaderUtils;
 import org.apache.cxf.common.util.StringUtils;
@@ -340,7 +340,7 @@ class JAXBContextInitializer extends ServiceModelVisitor {
             //fields are accessible even if not public, must look at the declared fields
             //then walk to parents declared fields, etc...
             Field fields[] = cls.getDeclaredFields(); 
-            ClassWrapper cw=new ClassWrapper(cls);
+            ClassEx cw=new ClassEx(cls);
             for (Field f : fields) {
                 if (isFieldAccepted(f, accessType)) {
                     addType(cw.getFieldGenericType(f));
@@ -348,7 +348,7 @@ class JAXBContextInitializer extends ServiceModelVisitor {
             }
             walkReferences(cls.getSuperclass());
         }
-        ClassWrapper cw=new ClassWrapper(cls);
+        ClassEx cw=new ClassEx(cls);
         if (accessType != XmlAccessType.FIELD) {   // only look for methods if we are instructed to
             Method methods[] = cls.getDeclaredMethods(); 
             for (Method m : methods) {

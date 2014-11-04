@@ -45,7 +45,7 @@ import java.util.Map;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.GenericUtils;
 
 import org.xml.sax.SAXException;
@@ -84,7 +84,7 @@ abstract class ArrayElementProperty<BeanT,ListT,ItemT> extends ArrayERProperty<B
     /**
      * Set by the constructor and reset in the {@link #wrapUp()} method.
      */
-    private Map<TypeRef<Type,ClassWrapper>,JaxBeanInfo> refs = new HashMap<TypeRef<Type, ClassWrapper>, JaxBeanInfo>();
+    private Map<TypeRef<Type,ClassEx>,JaxBeanInfo> refs = new HashMap<TypeRef<Type, ClassEx>, JaxBeanInfo>();
     /**
      * Set by the constructor and reset in the {@link #wrapUp()} method.
      */

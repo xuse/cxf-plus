@@ -48,7 +48,7 @@ import java.util.Collection;
 
 import jef.com.sun.xml.bind.v2.runtime.Location;
 import jef.common.annotation.ObjectName;
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.FieldEx;
 import jef.tools.reflect.GenericUtils;
 import jef.tools.reflect.MethodEx;
@@ -58,7 +58,7 @@ import jef.tools.reflect.MethodEx;
  *
  */
 @SuppressWarnings("rawtypes")
-public final class ReflectionNavigator implements Navigator<Type, ClassWrapper, FieldEx, MethodEx> {
+public final class ReflectionNavigator implements Navigator<Type, ClassEx, FieldEx, MethodEx> {
 
     /**
      * Singleton.
@@ -68,19 +68,19 @@ public final class ReflectionNavigator implements Navigator<Type, ClassWrapper, 
     ReflectionNavigator() {
     }
 
-    public ClassWrapper getSuperClass(ClassWrapper clazz) {
+    public ClassEx getSuperClass(ClassEx clazz) {
         if (clazz.getWrappered() == Object.class) {
             return null;
         }
-        ClassWrapper sc = clazz.getSuperclass();
+        ClassEx sc = clazz.getSuperclass();
         if (sc == null) {
-            sc = new ClassWrapper(Object.class);        // error recovery
+            sc = new ClassEx(Object.class);        // error recovery
         }
         return sc;
     }
-    private static final TypeVisitor<Type, ClassWrapper> baseClassFinder = new TypeVisitor<Type, ClassWrapper>() {
+    private static final TypeVisitor<Type, ClassEx> baseClassFinder = new TypeVisitor<Type, ClassEx>() {
 
-        public Type onClass(Class c, ClassWrapper sup) {
+        public Type onClass(Class c, ClassEx sup) {
             // t is a raw type
             if (sup.getWrappered() == c) {
                 return sup.getWrappered();
@@ -106,7 +106,7 @@ public final class ReflectionNavigator implements Navigator<Type, ClassWrapper, 
             return null;
         }
 
-        public Type onParameterizdType(ParameterizedType p, ClassWrapper sup) {
+        public Type onParameterizdType(ParameterizedType p, ClassEx sup) {
             Class raw = (Class) p.getRawType();
             if (raw == sup.getWrappered()) {
                 // p is of the form sup<...>
@@ -130,16 +130,16 @@ public final class ReflectionNavigator implements Navigator<Type, ClassWrapper, 
             }
         }
 
-        public Type onGenericArray(GenericArrayType g, ClassWrapper sup) {
+        public Type onGenericArray(GenericArrayType g, ClassEx sup) {
             // not clear what I should do here
             return null;
         }
 
-        public Type onVariable(TypeVariable v, ClassWrapper sup) {
+        public Type onVariable(TypeVariable v, ClassEx sup) {
             return visit(v.getBounds()[0], sup);
         }
 
-        public Type onWildcard(WildcardType w, ClassWrapper sup) {
+        public Type onWildcard(WildcardType w, ClassEx sup) {
             // not clear what I should do here
             return null;
         }
@@ -251,15 +251,15 @@ public final class ReflectionNavigator implements Navigator<Type, ClassWrapper, 
         }
     };
 
-    public Type getBaseClass(Type t, ClassWrapper sup) {
+    public Type getBaseClass(Type t, ClassEx sup) {
         return baseClassFinder.visit(t, sup);
     }
     
     public Type getBaseClass(Type t, Class sup) {
-        return baseClassFinder.visit(t, new ClassWrapper(sup));
+        return baseClassFinder.visit(t, new ClassEx(sup));
     }
 
-    public String getClassName(ClassWrapper clazz) {
+    public String getClassName(ClassEx clazz) {
     	String genericName=clazz.getGenericName();
         return genericName;
     }
@@ -279,7 +279,7 @@ public final class ReflectionNavigator implements Navigator<Type, ClassWrapper, 
         return result;
     }
 
-    public String getClassShortName(ClassWrapper clazz) {
+    public String getClassShortName(ClassEx clazz) {
     	String s;
     	if(clazz.getGenericType() instanceof ParameterizedType){
     		s= toGenericSimpleName((ParameterizedType)clazz.getGenericType());
@@ -307,11 +307,11 @@ public final class ReflectionNavigator implements Navigator<Type, ClassWrapper, 
 		return sb.toString();
 	}
 
-	public Collection<? extends FieldEx> getDeclaredFields(ClassWrapper clazz) {
+	public Collection<? extends FieldEx> getDeclaredFields(ClassEx clazz) {
         return Arrays.asList(clazz.getDeclaredFields());
     }
 
-    public FieldEx getDeclaredField(ClassWrapper clazz, String fieldName) {
+    public FieldEx getDeclaredField(ClassEx clazz, String fieldName) {
         try {
             return clazz.getDeclaredField(fieldName);
         } catch (NoSuchFieldException e) {
@@ -319,16 +319,16 @@ public final class ReflectionNavigator implements Navigator<Type, ClassWrapper, 
         }
     }
 
-    public Collection<? extends MethodEx> getDeclaredMethods(ClassWrapper clazz) {
+    public Collection<? extends MethodEx> getDeclaredMethods(ClassEx clazz) {
         return Arrays.asList(clazz.getDeclaredMethods());
     }
 
-    public ClassWrapper getDeclaringClassForField(FieldEx field) {
-        return new ClassWrapper(field.getDeclaringClass());
+    public ClassEx getDeclaringClassForField(FieldEx field) {
+        return new ClassEx(field.getDeclaringClass());
     }
 
-    public ClassWrapper getDeclaringClassForMethod(MethodEx method) {
-        return new ClassWrapper(method.getDeclaringClass());
+    public ClassEx getDeclaringClassForMethod(MethodEx method) {
+        return new ClassEx(method.getDeclaringClass());
     }
 
     public Type getFieldType(FieldEx field) {
@@ -373,17 +373,17 @@ public final class ReflectionNavigator implements Navigator<Type, ClassWrapper, 
         return c;
     }
 
-    public Class use(ClassWrapper c) {
+    public Class use(ClassEx c) {
         return c.getWrappered();
     }
 
-    public ClassWrapper asDecl(Type t) {
+    public ClassEx asDecl(Type t) {
 //        return erasure(t);
-    	return new ClassWrapper(t);
+    	return new ClassEx(t);
     }
 
-    public ClassWrapper asDecl(Class c) {
-        return new ClassWrapper(c);
+    public ClassEx asDecl(Class c) {
+        return new ClassEx(c);
     }
     /**
      * Implements the logic for {@link #erasure(Type)}.
@@ -434,18 +434,18 @@ public final class ReflectionNavigator implements Navigator<Type, ClassWrapper, 
         //return eraser.visit(t, null);
     }
 
-    public boolean isAbstract(ClassWrapper clazz) {
+    public boolean isAbstract(ClassEx clazz) {
         return Modifier.isAbstract(clazz.getModifiers());
     }
 
-    public boolean isFinal(ClassWrapper clazz) {
+    public boolean isFinal(ClassEx clazz) {
         return Modifier.isFinal(clazz.getModifiers());
     }
 
     /**
      * Returns the {@link Type} object that represents {@code clazz&lt;T1,T2,T3>}.
      */
-    public Type createParameterizedType(ClassWrapper rawType, Type... arguments) {
+    public Type createParameterizedType(ClassEx rawType, Type... arguments) {
         return new ParameterizedTypeImpl(rawType.getWrappered(), arguments, null);
     }
 
@@ -510,7 +510,7 @@ public final class ReflectionNavigator implements Navigator<Type, ClassWrapper, 
         return primitiveType;
     }
 
-    public Location getClassLocation(final ClassWrapper clazz) {
+    public Location getClassLocation(final ClassEx clazz) {
         return new Location() {
             @Override
             public String toString() {
@@ -537,7 +537,7 @@ public final class ReflectionNavigator implements Navigator<Type, ClassWrapper, 
         };
     }
 
-    public boolean hasDefaultConstructor(ClassWrapper c) {
+    public boolean hasDefaultConstructor(ClassEx c) {
         try {
             c.getDeclaredConstructor();
             return true;
@@ -558,11 +558,11 @@ public final class ReflectionNavigator implements Navigator<Type, ClassWrapper, 
         return Modifier.isPublic(field.getModifiers());
     }
 
-    public boolean isEnum(ClassWrapper c) {
+    public boolean isEnum(ClassEx c) {
         return Enum.class.isAssignableFrom(c.getWrappered());
     }
 
-    public FieldEx[] getEnumConstants(ClassWrapper clazz) {
+    public FieldEx[] getEnumConstants(ClassEx clazz) {
         try {
             Object[] values = clazz.getEnumConstants();
             FieldEx[] fields = new FieldEx[values.length];
@@ -582,7 +582,7 @@ public final class ReflectionNavigator implements Navigator<Type, ClassWrapper, 
         return Void.class;
     }
 
-    public String getPackageName(ClassWrapper clazz) {
+    public String getPackageName(ClassEx clazz) {
         String name = clazz.getName();
         int idx = name.lastIndexOf('.');
         if (idx < 0) {
@@ -593,13 +593,13 @@ public final class ReflectionNavigator implements Navigator<Type, ClassWrapper, 
         }
     }
 
-    public ClassWrapper findClass(String className, ClassWrapper referencePoint) {
+    public ClassEx findClass(String className, ClassEx referencePoint) {
         try {
             ClassLoader cl = referencePoint.getWrappered().getClassLoader();
             if (cl == null) {
                 cl = ClassLoader.getSystemClassLoader();
             }
-            return new ClassWrapper(cl.loadClass(className));
+            return new ClassEx(cl.loadClass(className));
         } catch (ClassNotFoundException e) {
             return null;
         }
@@ -609,7 +609,7 @@ public final class ReflectionNavigator implements Navigator<Type, ClassWrapper, 
         return method.isBridge();
     }
 
-    public boolean isOverriding(MethodEx method, ClassWrapper base) {
+    public boolean isOverriding(MethodEx method, ClassEx base) {
         // this isn't actually correct,
         // as the JLS considers
         // class Derived extends Base<Integer> {
@@ -637,7 +637,7 @@ public final class ReflectionNavigator implements Navigator<Type, ClassWrapper, 
         return false;
     }
 
-    public boolean isInterface(ClassWrapper clazz) {
+    public boolean isInterface(ClassEx clazz) {
         return clazz.isInterface();
     }
 
@@ -645,7 +645,7 @@ public final class ReflectionNavigator implements Navigator<Type, ClassWrapper, 
         return Modifier.isTransient(f.getModifiers());
     }
 
-    public boolean isInnerClass(ClassWrapper clazz) {
+    public boolean isInnerClass(ClassEx clazz) {
         return clazz.getEnclosingClass() != null && !Modifier.isStatic(clazz.getModifiers());
     }
 

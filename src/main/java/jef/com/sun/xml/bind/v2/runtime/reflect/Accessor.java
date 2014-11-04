@@ -50,7 +50,7 @@ import java.util.logging.Logger;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.FieldEx;
 import jef.tools.reflect.GenericUtils;
 import jef.tools.reflect.MethodEx;
@@ -211,7 +211,7 @@ public abstract class Accessor<BeanT,ValueT> implements Receiver {
         return new AdaptedAccessor<BeanT,ValueT,T>(targetType, this, adapter);
     }
 
-    public final <T> Accessor<BeanT,T> adapt(Adapter<Type,ClassWrapper> adapter) {
+    public final <T> Accessor<BeanT,T> adapt(Adapter<Type,ClassEx> adapter) {
         return new AdaptedAccessor<BeanT,ValueT,T>(
             (Class<T>)GenericUtils.getRawClass(adapter.defaultType),
             this,

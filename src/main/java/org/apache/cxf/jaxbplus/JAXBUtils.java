@@ -66,7 +66,7 @@ import jef.accelerator.asm.MethodVisitor;
 import jef.accelerator.asm.Opcodes;
 import jef.com.sun.xml.bind.api.JAXBRIContext;
 import jef.com.sun.xml.bind.api.TypeReference;
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 import org.apache.cxf.common.logging.LogUtils;
 import org.apache.cxf.common.util.ASMHelper;
@@ -804,7 +804,7 @@ public final class JAXBUtils {
         Map<String, ClassLoader> packageLoaders = new HashMap<String, ClassLoader>();
         Set<Type> objectFactories = new HashSet<Type>();
         for (Type jc : classes) {
-        	ClassWrapper jcls=new ClassWrapper(jc);
+        	ClassEx jcls=new ClassEx(jc);
             String pkgName = jcls.getPackageName();
             if (!packages.containsKey(pkgName)) {
                 Package pkg = jcls.getPackage();

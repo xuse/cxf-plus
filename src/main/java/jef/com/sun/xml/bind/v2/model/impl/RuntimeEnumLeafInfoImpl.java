@@ -46,7 +46,7 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.FieldEx;
 import jef.tools.reflect.MethodEx;
 
@@ -65,7 +65,7 @@ import jef.com.sun.xml.bind.v2.runtime.XMLSerializer;
 /**
  * @author Kohsuke Kawaguchi
  */
-final class RuntimeEnumLeafInfoImpl<T extends Enum<T>,B> extends EnumLeafInfoImpl<Type,ClassWrapper,FieldEx,MethodEx>
+final class RuntimeEnumLeafInfoImpl<T extends Enum<T>,B> extends EnumLeafInfoImpl<Type,ClassEx,FieldEx,MethodEx>
     implements RuntimeEnumLeafInfo, Transducer<T> {
 
     public Transducer<T> getTransducer() {
@@ -82,14 +82,14 @@ final class RuntimeEnumLeafInfoImpl<T extends Enum<T>,B> extends EnumLeafInfoImp
     private final Map<T,B> printMap;
 
     RuntimeEnumLeafInfoImpl(RuntimeModelBuilder builder, Locatable upstream, Class<T> enumType) {
-        super(builder,upstream,new ClassWrapper(enumType),enumType);
+        super(builder,upstream,new ClassEx(enumType),enumType);
         this.printMap = new EnumMap<T,B>(enumType);
 
         baseXducer = ((RuntimeNonElement)baseType).getTransducer();
     }
 
     @Override
-    public RuntimeEnumConstantImpl createEnumConstant(String name, String literal, FieldEx constant, EnumConstantImpl<Type,ClassWrapper,FieldEx,MethodEx> last) {
+    public RuntimeEnumConstantImpl createEnumConstant(String name, String literal, FieldEx constant, EnumConstantImpl<Type,ClassEx,FieldEx,MethodEx> last) {
         T t;
 
         try {
@@ -125,7 +125,7 @@ final class RuntimeEnumLeafInfoImpl<T extends Enum<T>,B> extends EnumLeafInfoImp
         return false;
     }
 
-    public ClassWrapper getClazz() {
+    public ClassEx getClazz() {
         return clazz;
     }
 

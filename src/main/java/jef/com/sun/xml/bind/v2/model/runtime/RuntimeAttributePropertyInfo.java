@@ -38,14 +38,14 @@ package jef.com.sun.xml.bind.v2.model.runtime;
 
 import java.lang.reflect.Type;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 import jef.com.sun.xml.bind.v2.model.core.AttributePropertyInfo;
 
 /**
  * @author Kohsuke Kawaguchi
  */
-public interface RuntimeAttributePropertyInfo extends AttributePropertyInfo<Type,ClassWrapper>, RuntimePropertyInfo, RuntimeNonElementRef {
+public interface RuntimeAttributePropertyInfo extends AttributePropertyInfo<Type,ClassEx>, RuntimePropertyInfo, RuntimeNonElementRef {
     // refinement
     RuntimeNonElement getTarget();
 }

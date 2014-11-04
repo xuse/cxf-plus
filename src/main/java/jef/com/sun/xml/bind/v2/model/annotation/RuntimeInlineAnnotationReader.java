@@ -42,7 +42,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.FieldEx;
 import jef.tools.reflect.MethodEx;
 
@@ -52,7 +52,7 @@ import jef.tools.reflect.MethodEx;
  *
  * @author Kohsuke Kawaguchi (kk@kohsuke.org)
  */
-public final class RuntimeInlineAnnotationReader extends AbstractInlineAnnotationReaderImpl<Type,ClassWrapper,FieldEx,MethodEx>
+public final class RuntimeInlineAnnotationReader extends AbstractInlineAnnotationReaderImpl<Type,ClassEx,FieldEx,MethodEx>
     implements RuntimeAnnotationReader {
 
     public <A extends Annotation> A getFieldAnnotation(Class<A> annotation, FieldEx field, Locatable srcPos) {
@@ -63,7 +63,7 @@ public final class RuntimeInlineAnnotationReader extends AbstractInlineAnnotatio
         return field.isAnnotationPresent(annotationType);
     }
 
-    public boolean hasClassAnnotation(ClassWrapper clazz, Class<? extends Annotation> annotationType) {
+    public boolean hasClassAnnotation(ClassEx clazz, Class<? extends Annotation> annotationType) {
         return clazz.isAnnotationPresent(annotationType);
     }
 
@@ -100,7 +100,7 @@ public final class RuntimeInlineAnnotationReader extends AbstractInlineAnnotatio
         return null;
     }
 
-    public <A extends Annotation> A getClassAnnotation(Class<A> a, ClassWrapper clazz, Locatable srcPos) {
+    public <A extends Annotation> A getClassAnnotation(Class<A> a, ClassEx clazz, Locatable srcPos) {
         return LocatableAnnotation.create(((Class<?>)clazz.getWrappered()).getAnnotation(a),srcPos);
     }
 
@@ -111,7 +111,7 @@ public final class RuntimeInlineAnnotationReader extends AbstractInlineAnnotatio
     private final Map<Class<? extends Annotation>,Map<Package,Annotation>> packageCache =
             new HashMap<Class<? extends Annotation>,Map<Package,Annotation>>();
 
-    public <A extends Annotation> A getPackageAnnotation(Class<A> a, ClassWrapper clazz, Locatable srcPos) {
+    public <A extends Annotation> A getPackageAnnotation(Class<A> a, ClassEx clazz, Locatable srcPos) {
         Package p = clazz.getPackage();
         if(p==null) return null;
 

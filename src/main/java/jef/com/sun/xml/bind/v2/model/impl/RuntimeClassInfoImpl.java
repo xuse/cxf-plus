@@ -49,7 +49,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.FieldEx;
 import jef.tools.reflect.MethodEx;
 
@@ -82,7 +82,7 @@ import jef.com.sun.xml.bind.v2.runtime.unmarshaller.UnmarshallingContext;
 /**
  * @author Kohsuke Kawaguchi (kk@kohsuke.org)
  */
-class RuntimeClassInfoImpl extends ClassInfoImpl<Type,ClassWrapper,FieldEx,MethodEx>
+class RuntimeClassInfoImpl extends ClassInfoImpl<Type,ClassEx,FieldEx,MethodEx>
         implements RuntimeClassInfo, RuntimeElement {
 
     /**
@@ -95,12 +95,12 @@ class RuntimeClassInfoImpl extends ClassInfoImpl<Type,ClassWrapper,FieldEx,Metho
 
     private AccessorFactory accessorFactory;
 
-    public RuntimeClassInfoImpl(RuntimeModelBuilder modelBuilder, Locatable upstream, ClassWrapper clazz) {
+    public RuntimeClassInfoImpl(RuntimeModelBuilder modelBuilder, Locatable upstream, ClassEx clazz) {
         super(modelBuilder, upstream, clazz);
         accessorFactory = createAccessorFactory(clazz);
     }
 
-    protected AccessorFactory createAccessorFactory(ClassWrapper clazz) {
+    protected AccessorFactory createAccessorFactory(ClassEx clazz) {
         XmlAccessorFactory factoryAnn;
         AccessorFactory accFactory = null;
 
@@ -132,7 +132,7 @@ class RuntimeClassInfoImpl extends ClassInfoImpl<Type,ClassWrapper,FieldEx,Metho
         return accFactory;
     }
 
-    protected XmlAccessorFactory findXmlAccessorFactoryAnnotation(ClassWrapper clazz) {
+    protected XmlAccessorFactory findXmlAccessorFactoryAnnotation(ClassEx clazz) {
         XmlAccessorFactory factoryAnn = reader().getClassAnnotation(XmlAccessorFactory.class,clazz,this);
         if (factoryAnn == null) {
             factoryAnn = reader().getPackageAnnotation(XmlAccessorFactory.class,clazz,this);
@@ -150,27 +150,27 @@ class RuntimeClassInfoImpl extends ClassInfoImpl<Type,ClassWrapper,FieldEx,Metho
     }
 
     @Override
-    protected ReferencePropertyInfoImpl createReferenceProperty(PropertySeed<Type,ClassWrapper,FieldEx,MethodEx> seed) {
+    protected ReferencePropertyInfoImpl createReferenceProperty(PropertySeed<Type,ClassEx,FieldEx,MethodEx> seed) {
         return new RuntimeReferencePropertyInfoImpl(this,seed);
     }
 
     @Override
-    protected AttributePropertyInfoImpl createAttributeProperty(PropertySeed<Type,ClassWrapper,FieldEx,MethodEx> seed) {
+    protected AttributePropertyInfoImpl createAttributeProperty(PropertySeed<Type,ClassEx,FieldEx,MethodEx> seed) {
         return new RuntimeAttributePropertyInfoImpl(this,seed);
     }
 
     @Override
-    protected ValuePropertyInfoImpl createValueProperty(PropertySeed<Type,ClassWrapper,FieldEx,MethodEx> seed) {
+    protected ValuePropertyInfoImpl createValueProperty(PropertySeed<Type,ClassEx,FieldEx,MethodEx> seed) {
         return new RuntimeValuePropertyInfoImpl(this,seed);
     }
 
     @Override
-    protected ElementPropertyInfoImpl createElementProperty(PropertySeed<Type,ClassWrapper,FieldEx,MethodEx> seed) {
+    protected ElementPropertyInfoImpl createElementProperty(PropertySeed<Type,ClassEx,FieldEx,MethodEx> seed) {
         return new RuntimeElementPropertyInfoImpl(this,seed);
     }
 
     @Override
-    protected MapPropertyInfoImpl createMapProperty(PropertySeed<Type,ClassWrapper,FieldEx,MethodEx> seed) {
+    protected MapPropertyInfoImpl createMapProperty(PropertySeed<Type,ClassEx,FieldEx,MethodEx> seed) {
         return new RuntimeMapPropertyInfoImpl(this,seed);
     }
 
@@ -290,15 +290,15 @@ class RuntimeClassInfoImpl extends ClassInfoImpl<Type,ClassWrapper,FieldEx,Metho
         return xmlLocationAccessor;
     }
 
-    static final class RuntimePropertySeed implements PropertySeed<Type,ClassWrapper,FieldEx,MethodEx> {
+    static final class RuntimePropertySeed implements PropertySeed<Type,ClassEx,FieldEx,MethodEx> {
         /**
          * @see #getAccessor()
          */
         private final Accessor acc;
 
-        private final PropertySeed<Type,ClassWrapper,FieldEx,MethodEx> core;
+        private final PropertySeed<Type,ClassEx,FieldEx,MethodEx> core;
 
-        public RuntimePropertySeed(PropertySeed<Type,ClassWrapper,FieldEx,MethodEx> core, Accessor acc) {
+        public RuntimePropertySeed(PropertySeed<Type,ClassEx,FieldEx,MethodEx> core, Accessor acc) {
             this.core = core;
             this.acc = acc;
         }
@@ -343,7 +343,7 @@ class RuntimeClassInfoImpl extends ClassInfoImpl<Type,ClassWrapper,FieldEx,Metho
         private final TransducedAccessor<BeanT> xacc;
         private final Class<BeanT> ownerClass;
 
-        public TransducerImpl(ClassWrapper ownerClass,TransducedAccessor<BeanT> xacc) {
+        public TransducerImpl(ClassEx ownerClass,TransducedAccessor<BeanT> xacc) {
             this.xacc = xacc;
             this.ownerClass = (Class<BeanT>) ownerClass.getWrappered();
         }

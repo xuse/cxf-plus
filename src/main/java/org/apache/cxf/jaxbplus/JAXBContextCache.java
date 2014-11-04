@@ -37,7 +37,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.transform.dom.DOMSource;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.MethodEx;
 
 import org.apache.cxf.common.classloader.ClassLoaderUtils;
@@ -127,7 +127,7 @@ public final class JAXBContextCache {
                                                                      boolean exact)
         throws JAXBException {
         for (Type type : classes) {
-        	ClassWrapper clz=new ClassWrapper(type);
+        	ClassEx clz=new ClassEx(type);
             if (clz.getName().endsWith("ObjectFactory")
                 && checkObjectFactoryNamespaces(clz)) {
                 // kind of a hack, but ObjectFactories may be created with empty
@@ -197,7 +197,7 @@ public final class JAXBContextCache {
         return cachedContextAndSchemas;
     }
     
-    private static boolean checkObjectFactoryNamespaces(ClassWrapper clz) {
+    private static boolean checkObjectFactoryNamespaces(ClassEx clz) {
         for (MethodEx meth : clz.getMethods()) {
             XmlElementDecl decl = meth.getAnnotation(XmlElementDecl.class);
             if (decl != null

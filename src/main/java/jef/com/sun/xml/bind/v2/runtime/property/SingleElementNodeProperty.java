@@ -46,7 +46,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 import org.xml.sax.SAXException;
 
@@ -164,7 +164,7 @@ final class SingleElementNodeProperty<BeanT,ValueT> extends PropertyImpl<BeanT> 
     public void buildChildElementUnmarshallers(UnmarshallerChain chain, QNameMap<ChildLoader> handlers) {
         JAXBContextImpl context = chain.context;
 
-        for (TypeRef<Type,ClassWrapper> e : prop.getTypes()) {
+        for (TypeRef<Type,ClassEx> e : prop.getTypes()) {
             JaxBeanInfo bi = context.getOrCreate((RuntimeTypeInfo) e.getTarget());
             // if the expected Java type is already final, type substitution won't really work anyway.
             // this also traps cases like trying to substitute xsd:long element with xsi:type='xsd:int'

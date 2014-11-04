@@ -41,7 +41,7 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.FieldEx;
 import jef.tools.reflect.MethodEx;
 
@@ -57,8 +57,8 @@ import jef.com.sun.xml.bind.v2.model.runtime.RuntimeTypeInfoSet;
  *
  * @author Kohsuke Kawaguchi
  */
-final class RuntimeTypeInfoSetImpl extends TypeInfoSetImpl<Type,ClassWrapper,FieldEx,MethodEx> implements RuntimeTypeInfoSet {
-    public RuntimeTypeInfoSetImpl(AnnotationReader<Type,ClassWrapper,FieldEx,MethodEx> reader) {
+final class RuntimeTypeInfoSetImpl extends TypeInfoSetImpl<Type,ClassEx,FieldEx,MethodEx> implements RuntimeTypeInfoSet {
+    public RuntimeTypeInfoSetImpl(AnnotationReader<Type,ClassEx,FieldEx,MethodEx> reader) {
         super(Navigator.REFLECTION,reader,RuntimeBuiltinLeafInfoImpl.LEAVES);
     }
 
@@ -79,31 +79,31 @@ final class RuntimeTypeInfoSetImpl extends TypeInfoSetImpl<Type,ClassWrapper,Fie
         return (RuntimeNonElement)super.getAnyTypeInfo();
     }
 
-    public RuntimeNonElement getClassInfo(ClassWrapper clazz) {
+    public RuntimeNonElement getClassInfo(ClassEx clazz) {
         return (RuntimeNonElement)super.getClassInfo(clazz);
     }
 
-    public Map<ClassWrapper,RuntimeClassInfoImpl> beans() {
-        return (Map<ClassWrapper,RuntimeClassInfoImpl>)super.beans();
+    public Map<ClassEx,RuntimeClassInfoImpl> beans() {
+        return (Map<ClassEx,RuntimeClassInfoImpl>)super.beans();
     }
 
     public Map<Type,RuntimeBuiltinLeafInfoImpl<?>> builtins() {
         return (Map<Type,RuntimeBuiltinLeafInfoImpl<?>>)super.builtins();
     }
 
-    public Map<ClassWrapper,RuntimeEnumLeafInfoImpl<?,?>> enums() {
-        return (Map<ClassWrapper,RuntimeEnumLeafInfoImpl<?,?>>)super.enums();
+    public Map<ClassEx,RuntimeEnumLeafInfoImpl<?,?>> enums() {
+        return (Map<ClassEx,RuntimeEnumLeafInfoImpl<?,?>>)super.enums();
     }
 
     public Map<Type,RuntimeArrayInfoImpl> arrays() {
         return (Map<Type,RuntimeArrayInfoImpl>)super.arrays(); 
     }
 
-    public RuntimeElementInfoImpl getElementInfo(ClassWrapper scope,QName name) {
+    public RuntimeElementInfoImpl getElementInfo(ClassEx scope,QName name) {
         return (RuntimeElementInfoImpl)super.getElementInfo(scope,name);
     }
 
-    public Map<QName,RuntimeElementInfoImpl> getElementMappings(ClassWrapper scope) {
+    public Map<QName,RuntimeElementInfoImpl> getElementMappings(ClassEx scope) {
         return (Map<QName,RuntimeElementInfoImpl>)super.getElementMappings(scope);
     }
 

@@ -70,7 +70,7 @@ import jef.com.sun.xml.bind.v2.model.nav.Navigator;
 import jef.com.sun.xml.bind.v2.runtime.IllegalAnnotationException;
 import jef.com.sun.xml.bind.v2.runtime.Location;
 import jef.com.sun.xml.bind.v2.runtime.SwaRefAdapter;
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.GenericUtils;
 
 /**
@@ -400,7 +400,7 @@ abstract class PropertyInfoImpl<T, C, F, M> implements PropertyInfo<T, C>, Locat
 					uri = "";
 				}
 			} else {
-				ClassWrapper cw = (ClassWrapper) parent.getClazz();
+				ClassEx cw = (ClassEx) parent.getClazz();
 				// System.out.println(cw);
 				uri = JefAdapters.jefQualified.contains(cw.getPackageName()) ? getQualifiedNs(null) : "";
 			}

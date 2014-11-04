@@ -128,7 +128,7 @@ import jef.com.sun.xml.bind.v2.util.QNameMap;
 import jef.com.sun.xml.txw2.output.ResultFactory;
 import jef.common.log.LogUtil;
 import jef.tools.StringUtils;
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.FieldEx;
 import jef.tools.reflect.MethodEx;
 
@@ -246,7 +246,7 @@ public final class JAXBContextImpl extends JAXBRIContext {
     private @NotNull RuntimeAnnotationReader annotaitonReader;
 
     private /*almost final*/ boolean hasSwaRef;
-    private final @NotNull Map<ClassWrapper,ClassWrapper> subclassReplacements;
+    private final @NotNull Map<ClassEx,ClassEx> subclassReplacements;
 
     /**
      * If true, we aim for faster {@link JAXBContext} instanciation performance,
@@ -333,7 +333,7 @@ public final class JAXBContextImpl extends JAXBRIContext {
                 typeMap.put( qn, ai );
         }
 
-        for( Entry<ClassWrapper, ? extends RuntimeClassInfo> e : typeSet.beans().entrySet() ) {
+        for( Entry<ClassEx, ? extends RuntimeClassInfo> e : typeSet.beans().entrySet() ) {
             ClassBeanInfoImpl<?> bi = getOrCreate(e.getValue());
 
             XmlSchema xs = this.annotaitonReader.getPackageAnnotation(XmlSchema.class, e.getKey(), null);
@@ -390,17 +390,17 @@ public final class JAXBContextImpl extends JAXBRIContext {
 
         for (TypeReference tr : typeRefs) {
             XmlJavaTypeAdapter xjta = tr.get(XmlJavaTypeAdapter.class);
-            Adapter<Type,ClassWrapper> a=null;
+            Adapter<Type,ClassEx> a=null;
             XmlList xl = tr.get(XmlList.class);
 
             // eventually compute the in-memory type
             Class erasedType = nav.erasure(tr.type);
 
             if(xjta!=null) {
-                a = new Adapter<Type,ClassWrapper>(new ClassWrapper(xjta.value()),nav);
+                a = new Adapter<Type,ClassEx>(new ClassEx(xjta.value()),nav);
             }
             if(tr.get(XmlAttachmentRef.class)!=null) {
-                a = new Adapter<Type,ClassWrapper>(new ClassWrapper(SwaRefAdapter.class),nav);
+                a = new Adapter<Type,ClassEx>(new ClassEx(SwaRefAdapter.class),nav);
                 hasSwaRef = true;
             }
 
@@ -477,7 +477,7 @@ public final class JAXBContextImpl extends JAXBRIContext {
                 // We'll add JaxBeanInfo for this later automatically
                 continue;
             XmlJavaTypeAdapter jta=JefAdapters.get(c);
-            builder.getTypeInfo(new Ref<Type,ClassWrapper>(builder,c,jta,null));
+            builder.getTypeInfo(new Ref<Type,ClassEx>(builder,c,jta,null));
             if(errorHandler.list.size()>0){
             	System.out.println(c);
             }
@@ -814,14 +814,14 @@ public final class JAXBContextImpl extends JAXBRIContext {
         };
     }
 
-    private NonElement<Type,ClassWrapper> getXmlType(RuntimeTypeInfoSet tis, TypeReference tr) {
+    private NonElement<Type,ClassEx> getXmlType(RuntimeTypeInfoSet tis, TypeReference tr) {
         if(tr==null)
             throw new IllegalArgumentException();
 
         XmlJavaTypeAdapter xjta = tr.get(XmlJavaTypeAdapter.class);
         XmlList xl = tr.get(XmlList.class);
 
-        Ref<Type,ClassWrapper> ref = new Ref<Type,ClassWrapper>(annotaitonReader, tis.getNavigator(), tr.type, xjta, xl );
+        Ref<Type,ClassEx> ref = new Ref<Type,ClassEx>(annotaitonReader, tis.getNavigator(), tr.type, xjta, xl );
 
         return tis.getTypeInfo(ref);
     }
@@ -860,7 +860,7 @@ public final class JAXBContextImpl extends JAXBRIContext {
         }
     }
 
-    private XmlSchemaGenerator<Type,ClassWrapper,FieldEx,MethodEx> createSchemaGenerator() {
+    private XmlSchemaGenerator<Type,ClassEx,FieldEx,MethodEx> createSchemaGenerator() {
         RuntimeTypeInfoSet tis;
         try {
             tis = getTypeInfoSet();
@@ -869,8 +869,8 @@ public final class JAXBContextImpl extends JAXBRIContext {
             throw new AssertionError(e);
         }
 
-        XmlSchemaGenerator<Type,ClassWrapper,FieldEx,MethodEx> xsdgen =
-                new XmlSchemaGenerator<Type,ClassWrapper,FieldEx,MethodEx>(tis.getNavigator(),tis);
+        XmlSchemaGenerator<Type,ClassEx,FieldEx,MethodEx> xsdgen =
+                new XmlSchemaGenerator<Type,ClassEx,FieldEx,MethodEx>(tis.getNavigator(),tis);
 
         // JAX-RPC uses Bridge objects that collide with
         // @XmlRootElement.
@@ -879,7 +879,7 @@ public final class JAXBContextImpl extends JAXBRIContext {
         for (RuntimeElementInfo ei : tis.getAllElements()) {
             rootTagNames.add(ei.getElementName());
         }
-        for (ClassInfo<Type, ClassWrapper> ci : tis.beans().values()) {
+        for (ClassInfo<Type, ClassEx> ci : tis.beans().values()) {
             if(ci.isElement())
                 rootTagNames.add(ci.asElement().getElementName());
         }
@@ -894,7 +894,7 @@ public final class JAXBContextImpl extends JAXBRIContext {
             if(tr.type==CompositeStructure.class) {
                 // this is a special class we introduced for JAX-WS that we *don't* want in the schema
             } else {
-                NonElement<Type,ClassWrapper> typeInfo = getXmlType(tis,tr);
+                NonElement<Type,ClassEx> typeInfo = getXmlType(tis,tr);
                 xsdgen.add(tr.tagName, !Navigator.REFLECTION.isPrimitive(tr.type),typeInfo);
             }
         }
@@ -903,7 +903,7 @@ public final class JAXBContextImpl extends JAXBRIContext {
 
     public QName getTypeName(TypeReference tr) {
         try {
-            NonElement<Type,ClassWrapper> xt = getXmlType(getTypeInfoSet(),tr);
+            NonElement<Type,ClassEx> xt = getXmlType(getTypeInfoSet(),tr);
             if(xt==null)    throw new IllegalArgumentException();
             return xt.getTypeName();
         } catch (IllegalAnnotationsException e) {
@@ -1069,7 +1069,7 @@ public final class JAXBContextImpl extends JAXBRIContext {
         private boolean retainPropertyInfo = false;
         private String defaultNsUri = "";
         private @NotNull RuntimeAnnotationReader annotationReader = new RuntimeInlineAnnotationReader();
-        private @NotNull Map<ClassWrapper,ClassWrapper> subclassReplacements = Collections.emptyMap();
+        private @NotNull Map<ClassEx,ClassEx> subclassReplacements = Collections.emptyMap();
         private boolean c14nSupport = false;
         private Type[] classes;
         private Collection<TypeReference> typeRefs;
@@ -1130,7 +1130,7 @@ public final class JAXBContextImpl extends JAXBRIContext {
             return this;
         }
 
-        public JAXBContextBuilder setSubclassReplacements(Map<ClassWrapper,ClassWrapper> val) {
+        public JAXBContextBuilder setSubclassReplacements(Map<ClassEx,ClassEx> val) {
             this.subclassReplacements = val;
             return this;
         }

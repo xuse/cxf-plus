@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 
 import jef.tools.Assert;
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -34,7 +34,7 @@ public class SpringServletServcieLookup implements ServiceLookup {
 			Object impl = beans.get(key);
 			
 			// 寻找服务的发布接口
-			Class<?>[] intfs = new ClassWrapper(impl.getClass()).getInterfaces();
+			Class<?>[] intfs = new ClassEx(impl.getClass()).getInterfaces();
 			if (intfs.length == 0)
 				continue;
 			Class<?> servClass = null;

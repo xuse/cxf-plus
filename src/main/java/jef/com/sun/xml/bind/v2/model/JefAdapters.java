@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import jef.com.sun.xml.bind.v2.model.annotation.XmlJavaTypeAdapterQuick;
 import jef.tools.ArrayUtils;
 import jef.tools.IOUtils;
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.GenericUtils;
 
 public class JefAdapters {
@@ -39,8 +39,8 @@ public class JefAdapters {
 			for (URL url : in) {
 				Map<String, String> map = IOUtils.loadProperties(IOUtils.getReader(url, null));
 				for (Entry<String, String> e : map.entrySet()) {
-					Class c = ClassWrapper.getClass(e.getKey());
-					Class adapter = ClassWrapper.getClass(e.getValue());
+					Class c = ClassEx.getClass(e.getKey());
+					Class adapter = ClassEx.getClass(e.getValue());
 					if (c == null || adapter == null)
 						continue;
 					if (!XmlAdapter.class.isAssignableFrom(adapter))

@@ -39,21 +39,20 @@ package jef.com.sun.xml.bind.v2.model.impl;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import jef.tools.reflect.ClassWrapper;
-import jef.tools.reflect.FieldEx;
-import jef.tools.reflect.MethodEx;
-
 import jef.com.sun.xml.bind.v2.model.runtime.RuntimeNonElement;
 import jef.com.sun.xml.bind.v2.model.runtime.RuntimePropertyInfo;
 import jef.com.sun.xml.bind.v2.model.runtime.RuntimeValuePropertyInfo;
+import jef.tools.reflect.ClassEx;
+import jef.tools.reflect.FieldEx;
+import jef.tools.reflect.MethodEx;
 
 /**
  * @author Kohsuke Kawaguchi
  */
-final class RuntimeValuePropertyInfoImpl extends ValuePropertyInfoImpl<Type,ClassWrapper,FieldEx,MethodEx>
+final class RuntimeValuePropertyInfoImpl extends ValuePropertyInfoImpl<Type,ClassEx,FieldEx,MethodEx>
     implements RuntimeValuePropertyInfo {
 
-    RuntimeValuePropertyInfoImpl(RuntimeClassInfoImpl classInfo, PropertySeed<Type,ClassWrapper,FieldEx,MethodEx> seed) {
+    RuntimeValuePropertyInfoImpl(RuntimeClassInfoImpl classInfo, PropertySeed<Type,ClassEx,FieldEx,MethodEx> seed) {
         super(classInfo, seed);
     }
 

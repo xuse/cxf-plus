@@ -38,12 +38,11 @@ package jef.com.sun.xml.bind.v2.model.runtime;
 
 import java.lang.reflect.Type;
 
-import jef.tools.reflect.ClassWrapper;
-
 import jef.com.sun.xml.bind.v2.model.core.TypeInfo;
+import jef.tools.reflect.ClassEx;
 
 /**
  * @author Kohsuke Kawaguchi
  */
-public interface RuntimeTypeInfo extends TypeInfo<Type,ClassWrapper> {
+public interface RuntimeTypeInfo extends TypeInfo<Type,ClassEx> {
 }

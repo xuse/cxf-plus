@@ -38,7 +38,7 @@ package jef.com.sun.xml.bind.v2.model.runtime;
 
 import java.lang.reflect.Type;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 import jef.com.sun.xml.bind.v2.model.core.NonElement;
 import jef.com.sun.xml.bind.v2.runtime.Transducer;
@@ -46,7 +46,7 @@ import jef.com.sun.xml.bind.v2.runtime.Transducer;
 /**
  * @author Kohsuke Kawaguchi
  */
-public interface RuntimeNonElement extends NonElement<Type,ClassWrapper>, RuntimeTypeInfo {
+public interface RuntimeNonElement extends NonElement<Type,ClassEx>, RuntimeTypeInfo {
     /**
      * This method doesn't take the reference properties defined on
      * {@link RuntimeNonElementRef} into account (such as ID-ness.)

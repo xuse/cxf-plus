@@ -38,13 +38,13 @@ package jef.com.sun.xml.bind.v2.model.runtime;
 
 import java.lang.reflect.Type;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 import jef.com.sun.xml.bind.v2.model.core.ValuePropertyInfo;
 
 /**
  * @author Kohsuke Kawaguchi
  */
-public interface RuntimeValuePropertyInfo extends ValuePropertyInfo<Type,ClassWrapper>,RuntimePropertyInfo,RuntimeNonElementRef {
+public interface RuntimeValuePropertyInfo extends ValuePropertyInfo<Type,ClassEx>,RuntimePropertyInfo,RuntimeNonElementRef {
     RuntimeNonElement getTarget();
 }

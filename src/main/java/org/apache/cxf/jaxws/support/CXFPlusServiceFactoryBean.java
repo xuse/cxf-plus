@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.namespace.QName;
 
 import jef.tools.StringUtils;
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.GenericUtils;
 
 import org.apache.cxf.common.i18n.Message;
@@ -135,12 +135,12 @@ public class CXFPlusServiceFactoryBean extends org.apache.cxf.jaxws.support.JaxW
     }
     
     private Type[] getMethodGenericTypes(Method method) {
-    	ClassWrapper clz=new ClassWrapper(getServiceClass());
+    	ClassEx clz=new ClassEx(getServiceClass());
         return clz.getMethodParamTypes(method) ;
  	}
 
 	private Type getGenericReturnType(Method method) {
-		ClassWrapper clz=new ClassWrapper(getServiceClass());
+		ClassEx clz=new ClassEx(getServiceClass());
 		return clz.getMethodReturnType(method);
 	}
 

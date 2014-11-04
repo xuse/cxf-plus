@@ -38,7 +38,7 @@ package jef.com.sun.xml.bind.v2.model.impl;
 
 import java.lang.reflect.Type;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.FieldEx;
 import jef.tools.reflect.MethodEx;
 
@@ -50,7 +50,7 @@ import jef.com.sun.xml.bind.v2.runtime.Transducer;
 /**
  * @author Kohsuke Kawaguchi
  */
-final class RuntimeArrayInfoImpl extends ArrayInfoImpl<Type,ClassWrapper,FieldEx,MethodEx> implements RuntimeArrayInfo {
+final class RuntimeArrayInfoImpl extends ArrayInfoImpl<Type,ClassEx,FieldEx,MethodEx> implements RuntimeArrayInfo {
     RuntimeArrayInfoImpl(RuntimeModelBuilder builder, Locatable upstream, Class arrayType) {
         super(builder, upstream, arrayType);
     }

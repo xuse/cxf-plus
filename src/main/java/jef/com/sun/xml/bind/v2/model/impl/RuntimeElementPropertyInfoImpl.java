@@ -41,7 +41,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.FieldEx;
 import jef.tools.reflect.MethodEx;
 
@@ -52,12 +52,12 @@ import jef.com.sun.xml.bind.v2.runtime.reflect.Accessor;
 /**
  * @author Kohsuke Kawaguchi
  */
-class RuntimeElementPropertyInfoImpl extends ElementPropertyInfoImpl<Type,ClassWrapper,FieldEx,MethodEx>
+class RuntimeElementPropertyInfoImpl extends ElementPropertyInfoImpl<Type,ClassEx,FieldEx,MethodEx>
     implements RuntimeElementPropertyInfo {
 
     private final Accessor acc;
 
-    RuntimeElementPropertyInfoImpl(RuntimeClassInfoImpl classInfo, PropertySeed<Type,ClassWrapper,FieldEx,MethodEx> seed) {
+    RuntimeElementPropertyInfoImpl(RuntimeClassInfoImpl classInfo, PropertySeed<Type,ClassEx,FieldEx,MethodEx> seed) {
         super(classInfo, seed);
         Accessor rawAcc = ((RuntimeClassInfoImpl.RuntimePropertySeed)seed).getAccessor();
         if(getAdapter()!=null && !isCollection())

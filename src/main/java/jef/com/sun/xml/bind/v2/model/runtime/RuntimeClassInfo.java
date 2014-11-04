@@ -43,7 +43,7 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 import org.xml.sax.Locator;
 
@@ -54,7 +54,7 @@ import jef.com.sun.xml.bind.v2.runtime.reflect.Accessor;
 /**
  * @author Kohsuke Kawaguchi (kk@kohsuke.org)
  */
-public interface RuntimeClassInfo extends ClassInfo<Type,ClassWrapper>, RuntimeNonElement {
+public interface RuntimeClassInfo extends ClassInfo<Type,ClassEx>, RuntimeNonElement {
     RuntimeClassInfo getBaseClass();
 
     // refined to return RuntimePropertyInfo

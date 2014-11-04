@@ -54,7 +54,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 import jef.tools.ArrayUtils;
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 import jef.com.sun.istack.FinalArrayList;
 import jef.com.sun.xml.bind.Util;
@@ -169,11 +169,11 @@ public class ContextFactory {
         return builder.build();
     }
 
-	private static Map<ClassWrapper, ClassWrapper> wrapperedMap(Map<Class, Class> subclassReplacements) {
+	private static Map<ClassEx, ClassEx> wrapperedMap(Map<Class, Class> subclassReplacements) {
     	if(subclassReplacements==null)return null;
-    	Map<ClassWrapper,ClassWrapper> result=new HashMap<ClassWrapper,ClassWrapper>();
+    	Map<ClassEx,ClassEx> result=new HashMap<ClassEx,ClassEx>();
     	for(Entry<Class,Class> e: subclassReplacements.entrySet()){
-    		result.put(new ClassWrapper(e.getKey()), new ClassWrapper(e.getValue()));
+    		result.put(new ClassEx(e.getKey()), new ClassEx(e.getValue()));
     	}
 		return result;
 	}

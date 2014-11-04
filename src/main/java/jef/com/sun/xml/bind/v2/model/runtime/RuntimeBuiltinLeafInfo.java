@@ -38,12 +38,12 @@ package jef.com.sun.xml.bind.v2.model.runtime;
 
 import java.lang.reflect.Type;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 
 import jef.com.sun.xml.bind.v2.model.core.BuiltinLeafInfo;
 
 /**
  * @author Kohsuke Kawaguchi
  */
-public interface RuntimeBuiltinLeafInfo extends BuiltinLeafInfo<Type,ClassWrapper>, RuntimeLeafInfo {
+public interface RuntimeBuiltinLeafInfo extends BuiltinLeafInfo<Type,ClassEx>, RuntimeLeafInfo {
 }

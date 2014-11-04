@@ -43,7 +43,7 @@ import java.util.Map;
 import javax.activation.MimeType;
 import javax.xml.namespace.QName;
 
-import jef.tools.reflect.ClassWrapper;
+import jef.tools.reflect.ClassEx;
 import jef.tools.reflect.FieldEx;
 import jef.tools.reflect.MethodEx;
 
@@ -81,40 +81,40 @@ import jef.com.sun.xml.bind.v2.runtime.unmarshaller.UnmarshallingContext;
  *
  * @author Kohsuke Kawaguchi (kk@kohsuke.org)
  */
-public class RuntimeModelBuilder extends ModelBuilder<Type,ClassWrapper,FieldEx,MethodEx> {
+public class RuntimeModelBuilder extends ModelBuilder<Type,ClassEx,FieldEx,MethodEx> {
     /**
      * The {@link JAXBContextImpl} for which the model is built.
      * Null when created for reflection.
      */
     public final @Nullable JAXBContextImpl context;
 
-    public RuntimeModelBuilder(JAXBContextImpl context, RuntimeAnnotationReader annotationReader, Map<ClassWrapper, ClassWrapper> subclassReplacements, String defaultNamespaceRemap) {
+    public RuntimeModelBuilder(JAXBContextImpl context, RuntimeAnnotationReader annotationReader, Map<ClassEx, ClassEx> subclassReplacements, String defaultNamespaceRemap) {
         super(annotationReader, Navigator.REFLECTION, subclassReplacements, defaultNamespaceRemap);
         this.context = context;
     }
 
     @Override
-    public RuntimeNonElement getClassInfo( ClassWrapper clazz, Locatable upstream ) {
+    public RuntimeNonElement getClassInfo( ClassEx clazz, Locatable upstream ) {
         return (RuntimeNonElement)super.getClassInfo(clazz,upstream);
     }
 
     @Override
-    public RuntimeNonElement getClassInfo( ClassWrapper clazz, boolean searchForSuperClass, Locatable upstream ) {
+    public RuntimeNonElement getClassInfo( ClassEx clazz, boolean searchForSuperClass, Locatable upstream ) {
         return (RuntimeNonElement)super.getClassInfo(clazz,searchForSuperClass,upstream);
     }
 
     @Override
-    protected RuntimeEnumLeafInfoImpl createEnumLeafInfo(ClassWrapper clazz, Locatable upstream) {
+    protected RuntimeEnumLeafInfoImpl createEnumLeafInfo(ClassEx clazz, Locatable upstream) {
         return new RuntimeEnumLeafInfoImpl(this,upstream,clazz.getWrappered());
     }
 
     @Override
-    protected RuntimeClassInfoImpl createClassInfo( ClassWrapper clazz, Locatable upstream ) {
+    protected RuntimeClassInfoImpl createClassInfo( ClassEx clazz, Locatable upstream ) {
         return new RuntimeClassInfoImpl(this,upstream,clazz);
     }
 
     @Override
-    public RuntimeElementInfoImpl createElementInfo(RegistryInfoImpl<Type,ClassWrapper,FieldEx,MethodEx> registryInfo, MethodEx method) throws IllegalAnnotationException {
+    public RuntimeElementInfoImpl createElementInfo(RegistryInfoImpl<Type,ClassEx,FieldEx,MethodEx> registryInfo, MethodEx method) throws IllegalAnnotationException {
         return new RuntimeElementInfoImpl(this,registryInfo, method);
     }
 

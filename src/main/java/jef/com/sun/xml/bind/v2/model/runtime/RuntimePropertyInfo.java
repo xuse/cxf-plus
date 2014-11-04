@@ -39,17 +39,16 @@ package jef.com.sun.xml.bind.v2.model.runtime;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-import jef.tools.reflect.ClassWrapper;
-
 import jef.com.sun.xml.bind.v2.model.core.PropertyInfo;
 import jef.com.sun.xml.bind.v2.runtime.reflect.Accessor;
+import jef.tools.reflect.ClassEx;
 
 /**
  * {@link PropertyInfo} that exposes more information.
  *
  * @author Kohsuke Kawaguchi (kk@kohsuke.org)
  */
-public interface RuntimePropertyInfo extends PropertyInfo<Type,ClassWrapper> {
+public interface RuntimePropertyInfo extends PropertyInfo<Type,ClassEx> {
 
     /** {@inheritDoc} */
     Collection<? extends RuntimeTypeInfo> ref();
