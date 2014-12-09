@@ -100,7 +100,7 @@ public abstract class OptimizedAccessorFactory {
             typeName = "Array_Of_" + t.getComponentType().getName().replace('.','_');
         }
 
-        String newClassName = toVMClassName(getter.getDeclaringClass())+"$JaxbAccessorM_"+getter.getName()+'_'+setter.getName()+'_'+typeName;
+        String newClassName = toVMClassName(getter.getDeclaringClass())+"$JapAccessorM_"+getter.getName()+'_'+setter.getName()+'_'+typeName;
         Class opt;
 
         if(t.isPrimitive())
@@ -152,7 +152,7 @@ public abstract class OptimizedAccessorFactory {
             // we can't access private fields
             return null;
 
-        String newClassName = toVMClassName(field.getDeclaringClass())+"$JaxbAccessorF_"+field.getName();
+        String newClassName = toVMClassName(field.getDeclaringClass())+"$JapAccessorF_"+field.getName();
 
         Class opt;
 
