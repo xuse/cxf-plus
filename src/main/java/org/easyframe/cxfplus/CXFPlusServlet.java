@@ -13,7 +13,6 @@ import jef.tools.ArrayUtils;
 import jef.tools.StringUtils;
 import jef.tools.reflect.BeanUtils;
 
-import org.apache.cxf.Bus;
 import org.apache.cxf.BusFactory;
 import org.apache.cxf.frontend.ServerFactoryBean;
 import org.apache.cxf.interceptor.LoggingInInterceptor;

@@ -1,5 +1,8 @@
 package org.easyframe.cxfplus.client;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientFactoryBean;
 import org.apache.cxf.frontend.ClientProxy;
@@ -60,6 +63,12 @@ public class WsClientFactoryImpl implements ClientFactory{
 			}
 		}
 		
+		Map<String, Object> prop=factoryBean.getProperties();
+		if(prop==null){
+			prop=new HashMap<String,Object>();
+			factoryBean.setProperties(prop);
+		}
+		prop.put("set-jaxb-validation-event-handler", false);
 		factoryBean.setAddress(url);
 		factoryBean.setServiceClass(clz);
 		@SuppressWarnings("unchecked")
