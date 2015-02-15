@@ -32,7 +32,6 @@ public class ClientTest extends org.junit.Assert implements InitializingBean{
 	@Resource 
 	private HelloService helloServiceWs;
 	
-	
 	@Resource
 	private PeopleService peopleService;
 	@Resource

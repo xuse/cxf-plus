@@ -17,35 +17,30 @@ public class SpringServletServcieLookup implements ServiceLookup {
 	private ApplicationContext applicationContext;
 	private Class<?> lookupInterface;
 
-	public SpringServletServcieLookup(ServletContext sc,Class<?> lookupInterface) {
+	public SpringServletServcieLookup(ServletContext sc, Class<?> lookupInterface) {
 		this.sc = sc;
-		this.lookupInterface=lookupInterface;
+		this.lookupInterface = lookupInterface;
 	}
 
 	public List<ServiceDefinition> getServices() {
-		if(applicationContext==null){
+		if (applicationContext == null) {
 			initContext();
 		}
-		//获取要发布的服务
-		List<ServiceDefinition> result=new ArrayList<ServiceDefinition>();
-		
+		// 获取要发布的服务
+		List<ServiceDefinition> result = new ArrayList<ServiceDefinition>();
+
 		Map<String, ?> beans = applicationContext.getBeansOfType(lookupInterface);
-		for (String key : beans.keySet()){
+		for (String key : beans.keySet()) {
 			Object impl = beans.get(key);
-			
-			// 寻找服务的发布接口
-			Class<?>[] intfs = new ClassEx(impl.getClass()).getInterfaces();
-			if (intfs.length == 0)
-				continue;
-			Class<?> servClass = null;
-			for (Class<?> clz : intfs) {
+
+			List<Class<?>> seis = new ArrayList<Class<?>>();
+			for (Class<?> clz : impl.getClass().getInterfaces()) {
 				if (lookupInterface.isAssignableFrom(clz)) {
-					servClass = clz;
-					break;
+					seis.add(clz);
 				}
 			}
-			if(servClass!=null){
-				result.add(new ServiceDefinition(key, servClass,impl));
+			for (Class<?> sei : seis) {
+				result.add(new ServiceDefinition(seis.size()>1?sei.getSimpleName():key, sei, impl));
 			}
 		}
 		return result;
@@ -57,23 +52,23 @@ public class SpringServletServcieLookup implements ServiceLookup {
 	}
 
 	public boolean isRemoteMode() {
-		if(applicationContext==null){
+		if (applicationContext == null) {
 			initContext();
 		}
 		try {
-			return applicationContext.getBean("_REMOTE_MODE")!=null;
+			return applicationContext.getBean("_REMOTE_MODE") != null;
 		} catch (Exception e) {
 		}
 		return false;
 	}
 
 	public ServiceProcessor getWebServiceProcessor() {
-		if(applicationContext==null){
+		if (applicationContext == null) {
 			initContext();
 		}
-		try{
-			return ((ServiceProcessor) applicationContext.getBean(ServiceProcessor.class));	
-		}catch(Exception e){
+		try {
+			return ((ServiceProcessor) applicationContext.getBean(ServiceProcessor.class));
+		} catch (Exception e) {
 			return null;
 		}
 	}

@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.ws.rs.Path;
 import javax.xml.namespace.QName;
 
 import jef.common.log.LogUtil;
@@ -25,13 +26,12 @@ import org.apache.cxf.jaxws.support.CXFPlusServiceFactoryBean;
 import org.apache.cxf.service.factory.CXFPlusServiceBean;
 import org.apache.cxf.transport.servlet.CXFNonSpringServlet;
 import org.easyframe.cxfplus.support.DefaultImpl;
-import org.easyframe.cxfplus.support.IWebService;
 import org.easyframe.cxfplus.support.ServiceDefinition;
 import org.easyframe.cxfplus.support.ServiceLookup;
 import org.easyframe.cxfplus.support.ServiceProcessor;
+import org.easyframe.cxfplus.support.SpringServletAnnotationLookup;
 import org.easyframe.cxfplus.support.SpringServletServcieLookup;
 import org.easyframe.jaxrs.FastJSONProvider;
-import org.easyframe.jaxrs.IRestfulService;
 import org.easyframe.jaxws.interceptors.TraceHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,25 +115,33 @@ public class CXFPlusServlet extends CXFNonSpringServlet {
 	}
 
 	private void initLookup(ServletConfig sc) {
+		//Use init-class to get RsLookup and WsLookup
 		String clz=sc.getInitParameter("init-class");
 		if(StringUtils.isNotEmpty(clz)){
 			try {
 				this.getClass().getClassLoader().loadClass(clz);
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			BeanUtils.newInstance(clz, this);
 		}
+		//Set default WsLookup
 		if (WSlookup == null) {
-			WSlookup = new SpringServletServcieLookup(this.getServletContext(),IWebService.class);
+			WSlookup = new SpringServletAnnotationLookup(getServletContext(),javax.jws.WebService.class);
 		}
+		//Set default RsLookup
 		if(RSlookup==null){
-			RSlookup=new SpringServletServcieLookup(getServletContext(), IRestfulService.class);
+			try{
+				Class<?> c=Class.forName("javax.ws.rs.Path");
+				RSlookup=new SpringServletAnnotationLookup(getServletContext(), Path.class);
+			}catch(ClassNotFoundException e){
+				log.warn("Class 'javax.ws.rs.Path' was not exist. JAX-RS not supported.");
+			}
 		}
 	}
 
 	public void processJaxRs() {
+		if(RSlookup==null)return;
 		log.debug("Start procesing the Restful-Services.");
 		Map<Class<?>, ResourceProvider> resProviders = new HashMap<Class<?>, ResourceProvider>();
 		for (ServiceDefinition def : RSlookup.getServices()) {
