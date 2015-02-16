@@ -4,16 +4,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.frontend.ClientFactoryBean;
-import org.apache.cxf.frontend.ClientProxyFactoryBean;
-import org.apache.cxf.interceptor.LoggingInInterceptor;
-import org.apache.cxf.interceptor.LoggingOutInterceptor;
-import org.apache.cxf.jaxws.CXFPlusClientFactoryBean;
-import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
-import org.apache.cxf.service.factory.CXFPlusServiceBean;
-import org.easyframe.jaxws.interceptors.TraceHandler;
-
 /**
  * 简单的WsFactory实现。
  * @author jiyi
@@ -41,7 +31,7 @@ public class DefaultImpl implements ServiceProcessor {
 		return Collections.unmodifiableMap(this.data);
 	}
 	
-	public void register(String name, IWebService service, Class<?> serviceClass) {
+	public void register(String name, Object service, Class<?> serviceClass) {
 		this.data.put(name, new ServiceDefinition(name,serviceClass,service));
 	}
 

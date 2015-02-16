@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 
 import jef.tools.Assert;
-import jef.tools.reflect.ClassEx;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;

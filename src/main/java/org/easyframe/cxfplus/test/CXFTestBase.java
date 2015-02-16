@@ -26,7 +26,6 @@ import org.apache.cxf.test.AbstractCXFTest;
 import org.easyframe.cxfplus.client.ClientFactory;
 import org.easyframe.cxfplus.client.WsClientFactoryImpl;
 import org.easyframe.cxfplus.support.DefaultImpl;
-import org.easyframe.cxfplus.support.IWebService;
 import org.easyframe.cxfplus.support.ServiceDefinition;
 import org.easyframe.cxfplus.support.ServiceProcessor;
 import org.easyframe.jaxws.interceptors.TraceHandler;
@@ -83,7 +82,7 @@ public abstract class CXFTestBase extends AbstractCXFTest {
 	 */
 	protected Document generateJaxWsWSDL(Class<?> intf) throws WSDLException{
 		Assert.isTrue(Boolean.valueOf(intf.isInterface()), "The input class " + intf.getClass() + " is not an interface!");
-		Server server = createLocalJaxWsService(intf, DUMMY);
+		Server server = createLocalJaxWsService(intf, new Object());
 		try{
 			return super.getWSDLDocument(server);
 		}finally{
@@ -92,7 +91,6 @@ public abstract class CXFTestBase extends AbstractCXFTest {
 		}
 	}
 	
-	private IWebService DUMMY=new IWebService(){};
 	
 	/**
 	 * 将指定的接口发布为服务，然后生成WSDL文档(RPC模式)
@@ -102,7 +100,7 @@ public abstract class CXFTestBase extends AbstractCXFTest {
 	 */
 	protected Document generateRpcWSDL(Class<?> intf) throws WSDLException{
 		Assert.isTrue(Boolean.valueOf(intf.isInterface()), "The input class " + intf.getClass() + " is not an interface!");
-		Server server = createLocalService(intf,DUMMY );
+		Server server = createLocalService(intf,new Object() );
 		try{
 			return super.getWSDLDocument(server);
 		}finally{
@@ -120,7 +118,7 @@ public abstract class CXFTestBase extends AbstractCXFTest {
 	 * @return 返回的SOAP消息
 	 * @throws Exception
 	 */
-	protected Node executeWs(IWebService bean, Class<?> intf, String inboundSoapFilename) throws Exception {
+	protected Node executeWs(Object bean, Class<?> intf, String inboundSoapFilename) throws Exception {
 		Assert.isTrue(Boolean.valueOf(intf.isInterface()), "The input class " + intf.getClass() + " is not an interface!");
 		Server server = createLocalJaxWsService(intf, bean);
 		try{
@@ -141,7 +139,7 @@ public abstract class CXFTestBase extends AbstractCXFTest {
 	 * @return 返回的SOAP消息
 	 * @throws Exception
 	 */
-	protected Node executeRpcWs(IWebService bean, Class<?> intf, String inboundSoapFilename) throws Exception {
+	protected Node executeRpcWs(Object bean, Class<?> intf, String inboundSoapFilename) throws Exception {
 		Assert.isTrue(Boolean.valueOf(intf.isInterface()), "The input class " + intf.getClass() + " is not an interface!");
 		Server server = createLocalService(intf, bean);
 		try{
@@ -162,10 +160,10 @@ public abstract class CXFTestBase extends AbstractCXFTest {
 	 * @return
 	 * @throws Exception
 	 */
-	protected Object invokeJaxWs(IWebService bean, Class<?> intf, String inboundSoapFilename) throws Exception {
+	protected Object invokeJaxWs(Object bean, Class<?> intf, String inboundSoapFilename) throws Exception {
 		Assert.isTrue(Boolean.valueOf(intf.isInterface()), "The input class " + intf.getClass() + " is not an interface!");
 		TestWsCallHandler ts = new TestWsCallHandler(bean);
-		bean=(IWebService) Proxy.newProxyInstance(bean.getClass().getClassLoader(),new Class[]{intf}, ts);
+		bean=Proxy.newProxyInstance(bean.getClass().getClassLoader(),new Class[]{intf}, ts);
 		Server server= this.createLocalJaxWsService(intf, bean);
 		String url = "local://" + intf.getName();
 		try{
@@ -184,10 +182,10 @@ public abstract class CXFTestBase extends AbstractCXFTest {
 	 * @return
 	 * @throws Exception
 	 */
-	protected Object invokeRPC(IWebService bean, Class<?> intf, String inboundSoapFilename) throws Exception {
+	protected Object invokeRPC(Object bean, Class<?> intf, String inboundSoapFilename) throws Exception {
 		Assert.isTrue(Boolean.valueOf(intf.isInterface()), "The input class " + intf.getClass() + " is not an interface!");
 		TestWsCallHandler ts = new TestWsCallHandler(bean);
-		bean=(IWebService) Proxy.newProxyInstance(bean.getClass().getClassLoader(),new Class[]{intf}, ts);
+		bean=Proxy.newProxyInstance(bean.getClass().getClassLoader(),new Class[]{intf}, ts);
 		Server server= this.createLocalService(intf, bean);
 		String url = "local://" + intf.getName();
 		try{
@@ -208,7 +206,7 @@ public abstract class CXFTestBase extends AbstractCXFTest {
 	 * @return
 	 * @throws Exception
 	 */
-	protected Object invokeJaxWsMethod(IWebService bean, Class<?> intf, String method,Object... params) throws Exception {
+	protected Object invokeJaxWsMethod(Object bean, Class<?> intf, String method,Object... params) throws Exception {
 		Assert.isTrue(Boolean.valueOf(intf.isInterface()), "The input class " + intf.getClass() + " is not an interface!");
 		List<Class<?>> list = new ArrayList<Class<?>>();
 		for (Object pobj : params) {
@@ -238,7 +236,7 @@ public abstract class CXFTestBase extends AbstractCXFTest {
 	 * @return
 	 * @throws Exception
 	 */
-	protected  Object[]  invokeRpcMethod(IWebService bean, Class<?> intf, String method,Object... params) throws Exception {
+	protected  Object[]  invokeRpcMethod(Object bean, Class<?> intf, String method,Object... params) throws Exception {
 		Assert.isTrue(Boolean.valueOf(intf.isInterface()), "The input class " + intf.getClass() + " is not an interface!");
 		List<Class<?>> list = new ArrayList<Class<?>>();
 		for (Object pobj : params) {
@@ -296,7 +294,7 @@ public abstract class CXFTestBase extends AbstractCXFTest {
 	 * @param bean
 	 * @return
 	 */
-	private Server createLocalJaxWsService(Class<?> intf, IWebService bean) {
+	private Server createLocalJaxWsService(Class<?> intf, Object bean) {
 		String url = "local://" + intf.getName();
 		ServiceDefinition ws = getFactory().processServiceDef(new ServiceDefinition(intf.getSimpleName(),intf,bean));
 		if (ws == null)
@@ -317,7 +315,7 @@ public abstract class CXFTestBase extends AbstractCXFTest {
 	 * @param bean
 	 * @return
 	 */
-	private Server createLocalService(Class<?> intf, IWebService bean) {
+	private Server createLocalService(Class<?> intf, Object bean) {
 		String url = "local://" + intf.getName();
 		ServiceDefinition ws = getFactory().processServiceDef(new ServiceDefinition(intf.getSimpleName(), intf, bean));
 		if (ws == null)
