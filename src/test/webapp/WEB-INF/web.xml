@@ -5,7 +5,7 @@
 	<!-- WS发布 -->
 	<servlet>
 		<servlet-name>WebServiceServlet</servlet-name>
-		<servlet-class>org.easyframe.cxfplus.CXFPlusServlet</servlet-class>
+		<servlet-class>com.github.cxfplus.CXFPlusServlet</servlet-class>
 		<init-param>
 			<param-name>trace</param-name>
 			<param-value>true</param-value>
@@ -18,9 +18,7 @@
 	</servlet-mapping>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>
-			classpath:spring-test-beans.xml
-		</param-value>
+		<param-value>classpath:spring-test-beans.xml</param-value>
 	</context-param>
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

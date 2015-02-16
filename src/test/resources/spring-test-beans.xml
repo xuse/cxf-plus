@@ -18,4 +18,6 @@
 
 	<bean class="ws.sample.MyWsTestImpl"/>
 	<bean class="rs.sample.CustomerResourceService"/>	
+	<bean class="com.github.cxfplus.jaxrs.PeopleServiceImpl" />
+	<bean class="com.github.cxfplus.jaxws.HelloServiceImpl" />
 </beans> 

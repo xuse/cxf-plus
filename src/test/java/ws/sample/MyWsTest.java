@@ -18,7 +18,6 @@ public interface MyWsTest{
 	Map<String, Double> method2(String[] paramArrayOfString);
 
 	Map<String, String> method3(Map<String, Long> paramMap,String arg2);
-	
 
 	File getFile();
 	

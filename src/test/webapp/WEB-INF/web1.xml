@@ -5,7 +5,7 @@
 	<!-- WS发布 -->
 	<servlet>
 		<servlet-name>WebServiceServlet</servlet-name>
-		<servlet-class>org.easyframe.cxfplus.CXFPlusServlet</servlet-class>
+		<servlet-class>com.github.cxfplus.CXFPlusServlet</servlet-class>
 		<init-param>
 			<param-name>trace</param-name>
 			<param-value>true</param-value>
