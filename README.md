@@ -24,28 +24,31 @@ You will get the 'cxf-plus.jar'.
 1. Add CXFPlusServlet to web.xml
 web.xml
 
-	<servlet>
-		<servlet-name>WebServiceServlet</servlet-name>
-		<servlet-class>com.github.cxfplus.CXFPlusServlet</servlet-class>
-		<init-param>
-			<param-name>trace</param-name>
-			<param-value>true</param-value>
-		</init-param>
-		<load-on-startup>2</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>WebServiceServlet</servlet-name>
-		<url-pattern>/ws/*</url-pattern>
-	</servlet-mapping>
+```
+<!-- WS & RS publish -->
+<servlet>
+	<servlet-name>WebServiceServlet</servlet-name>
+	<servlet-class>com.github.cxfplus.CXFPlusServlet</servlet-class>
+	<init-param>
+		<param-name>trace</param-name>
+		<param-value>true</param-value>
+	</init-param>
+	<load-on-startup>2</load-on-startup>
+</servlet>
+<servlet-mapping>
+	<servlet-name>WebServiceServlet</servlet-name>
+	<url-pattern>/ws/*</url-pattern>
+</servlet-mapping>
 	
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:spring-beans.xml</param-value>
-	</context-param>
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
-
+<!-- Spring framework -->
+<context-param>
+	<param-name>contextConfigLocation</param-name>
+	<param-value>classpath:spring-beans.xml</param-value>
+</context-param>
+<listener>
+	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+</listener>
+```
 2. Write any service with JAX-WS or JAX-RS annotations. e.g.
 
 HelloService.java
