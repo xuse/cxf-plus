@@ -5,8 +5,11 @@ An add-on for apache cxf to support transfer map and generic datatypes.
 ---
 ##简要说明 (Introduction)
 CXF Plus是在Apache开源服务框架项目 ​CXF 的基础上针对 泛型、支持的序列化对象种类等进行增强的框架。
+
 1. 增强的反射机制，可以对接口和POJO对象中的嵌套泛型、继承泛型等进行完整的解析，从而使得带有各种复杂泛型的接口可以正确发布和传输。
+
 2. 简化集成，针对目前大多数服务使用SpringFramework的特点，自动查找JAX-WS和JAX-RS注解进行服务发布，用户只需配置一个Servlet即可发布WebService。
+
 3. 运维支持：支持在日志输出报文，报文格式化等，便于开发调试。同时报文日志开关和格式可用JMX进行动态调节。
 
 ---
@@ -21,7 +24,6 @@ You will get the 'cxf-plus.jar'.
 1. Add CXFPlusServlet to web.xml
 web.xml
 
-	<!-- WS & RS publish -->
 	<servlet>
 		<servlet-name>WebServiceServlet</servlet-name>
 		<servlet-class>com.github.cxfplus.CXFPlusServlet</servlet-class>
@@ -36,7 +38,6 @@ web.xml
 		<url-pattern>/ws/*</url-pattern>
 	</servlet-mapping>
 	
-	<!-- Spring framework -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:spring-beans.xml</param-value>
@@ -73,7 +74,8 @@ spring-beans.xml
 
 	<?xml version="1.0" encoding="UTF-8"?>
 	<beans xmlns="http://www.springframework.org/schema/beans" 
-		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+		xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 		<bean class="HelloServiceImpl" />
 	</beans>
 
@@ -83,9 +85,12 @@ spring-beans.xml
 ###在Spring中远程调用代理 (客户端)
 
 	<beans xmlns="http://www.springframework.org/schema/beans"
-		xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
-		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd ">
+		xmlns:context="http://www.springframework.org/schema/context" 
+		xmlns:p="http://www.springframework.org/schema/p"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd ">
 
 		<bean id="peopleServiceWs" class="com.github.cxfplus.client.factory.JaxWsProxyBeanFactory"
 			p:url="http://host:port/cxf-context/ws/PeopleService" p:serviceInterface="HelloService" />
