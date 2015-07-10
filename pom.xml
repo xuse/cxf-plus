@@ -19,7 +19,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.5</version>
-			<scope>test</scope>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -101,7 +101,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 			<version>${springframework.version}</version>
-			<scope>test</scope>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -271,4 +271,16 @@
 			</plugin>
 		</plugins>
 	</build>
+	<distributionManagement>
+		<repository>
+			<id>fsdmdept-release</id>
+			<name>Release Repository</name>
+			<url>http://192.0.0.55/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>fsdmdept-snapshot</id>
+			<name>Snapshots Repository</name>
+			<url>http://192.0.0.55/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>
