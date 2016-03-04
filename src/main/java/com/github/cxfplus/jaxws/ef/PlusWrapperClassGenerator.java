@@ -48,12 +48,12 @@ import org.apache.cxf.common.util.PackageUtils;
 import org.apache.cxf.common.util.StringUtils;
 import org.apache.cxf.helpers.JavaUtils;
 import org.apache.cxf.jaxws.WrapperClassGenerator;
-import org.apache.cxf.service.factory.ReflectionServiceFactoryBean;
 import org.apache.cxf.service.model.InterfaceInfo;
 import org.apache.cxf.service.model.MessageInfo;
 import org.apache.cxf.service.model.MessagePartInfo;
 import org.apache.cxf.service.model.OperationInfo;
 import org.apache.cxf.service.model.SchemaInfo;
+import org.apache.cxf.wsdl.service.factory.ReflectionServiceFactoryBean;
 
 import com.github.cxfplus.jaxbplus.JAXBUtils;
 import com.github.cxfplus.jaxws.support.CXFPlusServiceFactoryBean;
