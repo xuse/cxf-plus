@@ -84,14 +84,8 @@
 			<version>${cxf.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- 
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-transports-http-jetty</artifactId>
-			<version>${cxf.version}</version>
-			<scope>test</scope>
-		</dependency>
-		 -->
+		<!-- <dependency> <groupId>org.apache.cxf</groupId> <artifactId>cxf-rt-transports-http-jetty</artifactId> 
+			<version>${cxf.version}</version> <scope>test</scope> </dependency> -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -220,6 +214,7 @@
 				<configuration>
 					<charset>UTF-8</charset>
 					<docencoding>UTF-8</docencoding>
+					<additionalparam>-Xdoclint:none</additionalparam>
 				</configuration>
 				<executions>
 					<execution>
