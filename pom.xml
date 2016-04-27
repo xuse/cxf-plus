@@ -6,12 +6,12 @@
 
 	<groupId>com.github.cxfplus</groupId>
 	<artifactId>cxf-plus</artifactId>
-	<version>3.1.5</version>
+	<version>3.1.6</version>
 	<name>cxf-plus</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<cxf.version>3.1.5</cxf.version>
+		<cxf.version>3.1.6</cxf.version>
 		<springframework.version>3.2.3.RELEASE</springframework.version>
 	</properties>
 	<dependencies>
@@ -27,10 +27,6 @@
 			<version>1.7.5</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- <dependency> <groupId>org.easyframe</groupId> <artifactId>common-core</artifactId> 
-			<version>1.9.5.RELEASE</version> <exclusions> <exclusion> <artifactId>rhino</artifactId> 
-			<groupId>org.mozilla</groupId> </exclusion> <exclusion> <artifactId>pinyin4j</artifactId> 
-			<groupId>com.belerweb</groupId> </exclusion> </exclusions> </dependency> -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxws</artifactId>
@@ -49,6 +45,11 @@
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-rs-client</artifactId>
+			<version>${cxf.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-rs-service-description</artifactId>
 			<version>${cxf.version}</version>
 		</dependency>
 		<dependency>
@@ -83,12 +84,14 @@
 			<version>${cxf.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- 
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-transports-http-jetty</artifactId>
 			<version>${cxf.version}</version>
 			<scope>test</scope>
 		</dependency>
+		 -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
